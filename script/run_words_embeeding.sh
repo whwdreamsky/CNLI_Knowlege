@@ -1,0 +1,1 @@
+python2 convert_embedding.py --vocab /home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master_back/multiffn-nli-master/cnli/words.txt --glove-data /home/hwwang/workplace/deeplearning/resource/sgns.target.word-word.dynwin5.thr10.neg5.dim300.iter5 --head True --npy cnli_sgns_2

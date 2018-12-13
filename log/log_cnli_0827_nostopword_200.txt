@@ -1,0 +1,743 @@
+/data1/luobinluo/opt/anaconda2/lib/python2.7/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Training with following options: /data1/hwwang/workplace/textentailment/multiffn-nli-master/src/train.py --model mlp -u 200 --save /data1/hwwang/workplace/textentailment/multiffn-nli-master/model_weights/cnli_model_nostopword_2/
+Reading data from /data1/hwwang/workplace/textentailment/multiffn-nli-master//cnli/cnli_train_seg_ltp_nostopword.txt
+Reading data from /data1/hwwang/workplace/textentailment/multiffn-nli-master//cnli/cnli_dev_seg_ltp_nostopword.txt
+Loading embeddings
+Embeddings have shape (40985, 300)
+/data1/hwwang/workplace/textentailment/multiffn-nli-master/src/utils.py:376: RuntimeWarning: invalid value encountered in true_divide
+  return embeddings / norms
+Converting words to indices
+Training sentences have shape (90003, 23) (firsts) and (90003, 24) (seconds)
+Validation sentences have shape (9996, 20) (firsts) and (9996, 19) (seconds)
+2018-08-27 16:24:38.485037: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2018-08-27 16:24:38.901403: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: 
+name: Tesla P40 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:0d:00.0
+totalMemory: 22.38GiB freeMemory: 22.21GiB
+2018-08-27 16:24:38.901452: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
+2018-08-27 16:24:39.193984: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-08-27 16:24:39.194036: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 
+2018-08-27 16:24:39.194046: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N 
+2018-08-27 16:24:39.194503: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 21557 MB memory) -> physical GPU (device: 0, name: Tesla P40, pci bus id: 0000:0d:00.0, compute capability: 6.1)
+Creating model
+projection/weights:0: 60000 params
+inter-attention/layer1/dense/kernel:0: 40000 params
+inter-attention/layer1/dense/bias:0: 200 params
+inter-attention/layer2/dense/kernel:0: 40000 params
+inter-attention/layer2/dense/bias:0: 200 params
+comparison/layer1/dense/kernel:0: 160000 params
+comparison/layer1/dense/bias:0: 200 params
+comparison/layer2/dense/kernel:0: 40000 params
+comparison/layer2/dense/bias:0: 200 params
+aggregation/linear/weights:0: 600 params
+aggregation/linear/bias:0: 3 params
+aggregation/layer1/dense/kernel:0: 160000 params
+aggregation/layer1/dense/bias:0: 200 params
+aggregation/layer2/dense/kernel:0: 40000 params
+aggregation/layer2/dense/bias:0: 200 params
+Total parameters: 541803
+Starting training
+0 completed epochs, 100 batches	Avg train loss: 1.102532	Avg train acc: 0.3569	Validation loss: 1.087775	Validation acc: 0.3996	(saved model)
+0 completed epochs, 200 batches	Avg train loss: 1.085537	Avg train acc: 0.3881	Validation loss: 1.085068	Validation acc: 0.3862
+0 completed epochs, 300 batches	Avg train loss: 1.079540	Avg train acc: 0.3937	Validation loss: 1.061666	Validation acc: 0.4437	(saved model)
+0 completed epochs, 400 batches	Avg train loss: 1.072852	Avg train acc: 0.4159	Validation loss: 1.055420	Validation acc: 0.4369
+0 completed epochs, 500 batches	Avg train loss: 1.054195	Avg train acc: 0.4394	Validation loss: 1.042051	Validation acc: 0.4677	(saved model)
+0 completed epochs, 600 batches	Avg train loss: 1.052244	Avg train acc: 0.4434	Validation loss: 1.020194	Validation acc: 0.4989	(saved model)
+0 completed epochs, 700 batches	Avg train loss: 1.037303	Avg train acc: 0.4634	Validation loss: 1.015471	Validation acc: 0.5166	(saved model)
+0 completed epochs, 800 batches	Avg train loss: 1.017883	Avg train acc: 0.4900	Validation loss: 0.995324	Validation acc: 0.5221	(saved model)
+0 completed epochs, 900 batches	Avg train loss: 0.998543	Avg train acc: 0.5100	Validation loss: 0.978842	Validation acc: 0.5332	(saved model)
+0 completed epochs, 1000 batches	Avg train loss: 1.001188	Avg train acc: 0.4991	Validation loss: 0.964736	Validation acc: 0.5332
+0 completed epochs, 1100 batches	Avg train loss: 0.988026	Avg train acc: 0.5178	Validation loss: 0.955209	Validation acc: 0.5433	(saved model)
+0 completed epochs, 1200 batches	Avg train loss: 0.967981	Avg train acc: 0.5212	Validation loss: 0.951681	Validation acc: 0.5492	(saved model)
+0 completed epochs, 1300 batches	Avg train loss: 0.974878	Avg train acc: 0.5225	Validation loss: 0.943722	Validation acc: 0.5515	(saved model)
+0 completed epochs, 1400 batches	Avg train loss: 0.976073	Avg train acc: 0.5269	Validation loss: 0.941789	Validation acc: 0.5534	(saved model)
+0 completed epochs, 1500 batches	Avg train loss: 0.951755	Avg train acc: 0.5413	Validation loss: 0.942161	Validation acc: 0.5561	(saved model)
+0 completed epochs, 1600 batches	Avg train loss: 0.970590	Avg train acc: 0.5406	Validation loss: 0.936397	Validation acc: 0.5655	(saved model)
+0 completed epochs, 1700 batches	Avg train loss: 0.970714	Avg train acc: 0.5241	Validation loss: 0.933947	Validation acc: 0.5629
+0 completed epochs, 1800 batches	Avg train loss: 0.952015	Avg train acc: 0.5387	Validation loss: 0.942444	Validation acc: 0.5534
+0 completed epochs, 1900 batches	Avg train loss: 0.955218	Avg train acc: 0.5497	Validation loss: 0.937126	Validation acc: 0.5578
+0 completed epochs, 2000 batches	Avg train loss: 0.937665	Avg train acc: 0.5556	Validation loss: 0.927116	Validation acc: 0.5643
+0 completed epochs, 2100 batches	Avg train loss: 0.944743	Avg train acc: 0.5450	Validation loss: 0.915777	Validation acc: 0.5709	(saved model)
+0 completed epochs, 2200 batches	Avg train loss: 0.933913	Avg train acc: 0.5466	Validation loss: 0.928217	Validation acc: 0.5609
+0 completed epochs, 2300 batches	Avg train loss: 0.943157	Avg train acc: 0.5466	Validation loss: 0.922365	Validation acc: 0.5658
+0 completed epochs, 2400 batches	Avg train loss: 0.951611	Avg train acc: 0.5350	Validation loss: 0.916053	Validation acc: 0.5736	(saved model)
+0 completed epochs, 2500 batches	Avg train loss: 0.936289	Avg train acc: 0.5603	Validation loss: 0.930580	Validation acc: 0.5596
+0 completed epochs, 2600 batches	Avg train loss: 0.930130	Avg train acc: 0.5553	Validation loss: 0.903282	Validation acc: 0.5848	(saved model)
+0 completed epochs, 2700 batches	Avg train loss: 0.948812	Avg train acc: 0.5416	Validation loss: 0.915830	Validation acc: 0.5692
+0 completed epochs, 2800 batches	Avg train loss: 0.939810	Avg train acc: 0.5494	Validation loss: 0.902811	Validation acc: 0.5852	(saved model)
+1 completed epochs, 2900 batches	Avg train loss: 0.914108	Avg train acc: 0.5698	Validation loss: 0.896751	Validation acc: 0.5863	(saved model)
+1 completed epochs, 3000 batches	Avg train loss: 0.931630	Avg train acc: 0.5606	Validation loss: 0.898447	Validation acc: 0.5836
+1 completed epochs, 3100 batches	Avg train loss: 0.901465	Avg train acc: 0.5859	Validation loss: 0.901039	Validation acc: 0.5875	(saved model)
+1 completed epochs, 3200 batches	Avg train loss: 0.930214	Avg train acc: 0.5544	Validation loss: 0.895177	Validation acc: 0.5871
+1 completed epochs, 3300 batches	Avg train loss: 0.933165	Avg train acc: 0.5587	Validation loss: 0.906428	Validation acc: 0.5765
+1 completed epochs, 3400 batches	Avg train loss: 0.933882	Avg train acc: 0.5491	Validation loss: 0.891153	Validation acc: 0.5961	(saved model)
+1 completed epochs, 3500 batches	Avg train loss: 0.928990	Avg train acc: 0.5631	Validation loss: 0.897903	Validation acc: 0.5870
+1 completed epochs, 3600 batches	Avg train loss: 0.899393	Avg train acc: 0.5659	Validation loss: 0.887014	Validation acc: 0.5911
+1 completed epochs, 3700 batches	Avg train loss: 0.900209	Avg train acc: 0.5781	Validation loss: 0.901335	Validation acc: 0.5803
+1 completed epochs, 3800 batches	Avg train loss: 0.912345	Avg train acc: 0.5684	Validation loss: 0.875814	Validation acc: 0.6038	(saved model)
+1 completed epochs, 3900 batches	Avg train loss: 0.905368	Avg train acc: 0.5878	Validation loss: 0.918336	Validation acc: 0.5737
+1 completed epochs, 4000 batches	Avg train loss: 0.908113	Avg train acc: 0.5731	Validation loss: 0.923495	Validation acc: 0.5723
+1 completed epochs, 4100 batches	Avg train loss: 0.893821	Avg train acc: 0.5809	Validation loss: 0.898488	Validation acc: 0.5865
+1 completed epochs, 4200 batches	Avg train loss: 0.892351	Avg train acc: 0.5966	Validation loss: 0.887367	Validation acc: 0.5923
+1 completed epochs, 4300 batches	Avg train loss: 0.878262	Avg train acc: 0.6025	Validation loss: 0.910848	Validation acc: 0.5836
+1 completed epochs, 4400 batches	Avg train loss: 0.900686	Avg train acc: 0.5753	Validation loss: 0.872511	Validation acc: 0.6010
+1 completed epochs, 4500 batches	Avg train loss: 0.898148	Avg train acc: 0.5866	Validation loss: 0.878889	Validation acc: 0.5997
+1 completed epochs, 4600 batches	Avg train loss: 0.890981	Avg train acc: 0.5972	Validation loss: 0.858185	Validation acc: 0.6098	(saved model)
+1 completed epochs, 4700 batches	Avg train loss: 0.892795	Avg train acc: 0.5909	Validation loss: 0.897678	Validation acc: 0.5883
+1 completed epochs, 4800 batches	Avg train loss: 0.893189	Avg train acc: 0.5847	Validation loss: 0.852001	Validation acc: 0.6144	(saved model)
+1 completed epochs, 4900 batches	Avg train loss: 0.897421	Avg train acc: 0.5747	Validation loss: 0.842634	Validation acc: 0.6211	(saved model)
+1 completed epochs, 5000 batches	Avg train loss: 0.885638	Avg train acc: 0.5894	Validation loss: 0.847601	Validation acc: 0.6182
+1 completed epochs, 5100 batches	Avg train loss: 0.886573	Avg train acc: 0.5903	Validation loss: 0.888736	Validation acc: 0.5912
+1 completed epochs, 5200 batches	Avg train loss: 0.884892	Avg train acc: 0.5956	Validation loss: 0.875544	Validation acc: 0.5999
+1 completed epochs, 5300 batches	Avg train loss: 0.895248	Avg train acc: 0.5775	Validation loss: 0.866879	Validation acc: 0.6128
+1 completed epochs, 5400 batches	Avg train loss: 0.865213	Avg train acc: 0.5988	Validation loss: 0.875658	Validation acc: 0.6004
+1 completed epochs, 5500 batches	Avg train loss: 0.860134	Avg train acc: 0.6103	Validation loss: 0.818688	Validation acc: 0.6382	(saved model)
+1 completed epochs, 5600 batches	Avg train loss: 0.891847	Avg train acc: 0.5866	Validation loss: 0.840336	Validation acc: 0.6217
+2 completed epochs, 5700 batches	Avg train loss: 0.878481	Avg train acc: 0.5996	Validation loss: 0.834912	Validation acc: 0.6245
+2 completed epochs, 5800 batches	Avg train loss: 0.850896	Avg train acc: 0.6175	Validation loss: 0.846630	Validation acc: 0.6236
+2 completed epochs, 5900 batches	Avg train loss: 0.846164	Avg train acc: 0.6116	Validation loss: 0.845717	Validation acc: 0.6242
+2 completed epochs, 6000 batches	Avg train loss: 0.858352	Avg train acc: 0.6075	Validation loss: 0.823266	Validation acc: 0.6340
+2 completed epochs, 6100 batches	Avg train loss: 0.842888	Avg train acc: 0.6078	Validation loss: 0.805377	Validation acc: 0.6480	(saved model)
+2 completed epochs, 6200 batches	Avg train loss: 0.827960	Avg train acc: 0.6288	Validation loss: 0.806827	Validation acc: 0.6462
+2 completed epochs, 6300 batches	Avg train loss: 0.826425	Avg train acc: 0.6328	Validation loss: 0.805843	Validation acc: 0.6455
+2 completed epochs, 6400 batches	Avg train loss: 0.838907	Avg train acc: 0.6366	Validation loss: 0.815975	Validation acc: 0.6371
+2 completed epochs, 6500 batches	Avg train loss: 0.858847	Avg train acc: 0.6094	Validation loss: 0.815233	Validation acc: 0.6405
+2 completed epochs, 6600 batches	Avg train loss: 0.816000	Avg train acc: 0.6434	Validation loss: 0.816733	Validation acc: 0.6397
+2 completed epochs, 6700 batches	Avg train loss: 0.840441	Avg train acc: 0.6228	Validation loss: 0.801748	Validation acc: 0.6501	(saved model)
+2 completed epochs, 6800 batches	Avg train loss: 0.832944	Avg train acc: 0.6278	Validation loss: 0.831759	Validation acc: 0.6346
+2 completed epochs, 6900 batches	Avg train loss: 0.841772	Avg train acc: 0.6228	Validation loss: 0.798764	Validation acc: 0.6519	(saved model)
+2 completed epochs, 7000 batches	Avg train loss: 0.834911	Avg train acc: 0.6362	Validation loss: 0.831107	Validation acc: 0.6311
+2 completed epochs, 7100 batches	Avg train loss: 0.852154	Avg train acc: 0.5988	Validation loss: 0.791344	Validation acc: 0.6540	(saved model)
+2 completed epochs, 7200 batches	Avg train loss: 0.816623	Avg train acc: 0.6459	Validation loss: 0.825199	Validation acc: 0.6311
+2 completed epochs, 7300 batches	Avg train loss: 0.829673	Avg train acc: 0.6275	Validation loss: 0.789925	Validation acc: 0.6530
+2 completed epochs, 7400 batches	Avg train loss: 0.818530	Avg train acc: 0.6362	Validation loss: 0.778212	Validation acc: 0.6646	(saved model)
+2 completed epochs, 7500 batches	Avg train loss: 0.843802	Avg train acc: 0.6159	Validation loss: 0.795062	Validation acc: 0.6521
+2 completed epochs, 7600 batches	Avg train loss: 0.832973	Avg train acc: 0.6253	Validation loss: 0.798627	Validation acc: 0.6510
+2 completed epochs, 7700 batches	Avg train loss: 0.820523	Avg train acc: 0.6350	Validation loss: 0.803850	Validation acc: 0.6416
+2 completed epochs, 7800 batches	Avg train loss: 0.853804	Avg train acc: 0.6172	Validation loss: 0.827579	Validation acc: 0.6309
+2 completed epochs, 7900 batches	Avg train loss: 0.813696	Avg train acc: 0.6431	Validation loss: 0.779424	Validation acc: 0.6592
+2 completed epochs, 8000 batches	Avg train loss: 0.837030	Avg train acc: 0.6209	Validation loss: 0.769781	Validation acc: 0.6689	(saved model)
+2 completed epochs, 8100 batches	Avg train loss: 0.841238	Avg train acc: 0.6194	Validation loss: 0.796036	Validation acc: 0.6506
+2 completed epochs, 8200 batches	Avg train loss: 0.832095	Avg train acc: 0.6272	Validation loss: 0.764723	Validation acc: 0.6713	(saved model)
+2 completed epochs, 8300 batches	Avg train loss: 0.823397	Avg train acc: 0.6384	Validation loss: 0.770263	Validation acc: 0.6706
+2 completed epochs, 8400 batches	Avg train loss: 0.791323	Avg train acc: 0.6388	Validation loss: 0.819224	Validation acc: 0.6483
+3 completed epochs, 8500 batches	Avg train loss: 0.798499	Avg train acc: 0.6511	Validation loss: 0.810185	Validation acc: 0.6541
+3 completed epochs, 8600 batches	Avg train loss: 0.775856	Avg train acc: 0.6628	Validation loss: 0.749010	Validation acc: 0.6794	(saved model)
+3 completed epochs, 8700 batches	Avg train loss: 0.797407	Avg train acc: 0.6616	Validation loss: 0.795515	Validation acc: 0.6600
+3 completed epochs, 8800 batches	Avg train loss: 0.800717	Avg train acc: 0.6441	Validation loss: 0.770025	Validation acc: 0.6690
+3 completed epochs, 8900 batches	Avg train loss: 0.797837	Avg train acc: 0.6391	Validation loss: 0.783388	Validation acc: 0.6617
+3 completed epochs, 9000 batches	Avg train loss: 0.787961	Avg train acc: 0.6491	Validation loss: 0.764426	Validation acc: 0.6768
+3 completed epochs, 9100 batches	Avg train loss: 0.784246	Avg train acc: 0.6547	Validation loss: 0.755990	Validation acc: 0.6790
+3 completed epochs, 9200 batches	Avg train loss: 0.785123	Avg train acc: 0.6544	Validation loss: 0.752420	Validation acc: 0.6755
+3 completed epochs, 9300 batches	Avg train loss: 0.779768	Avg train acc: 0.6650	Validation loss: 0.768686	Validation acc: 0.6700
+3 completed epochs, 9400 batches	Avg train loss: 0.799091	Avg train acc: 0.6531	Validation loss: 0.770418	Validation acc: 0.6744
+3 completed epochs, 9500 batches	Avg train loss: 0.775337	Avg train acc: 0.6562	Validation loss: 0.783736	Validation acc: 0.6679
+3 completed epochs, 9600 batches	Avg train loss: 0.784430	Avg train acc: 0.6531	Validation loss: 0.775197	Validation acc: 0.6678
+3 completed epochs, 9700 batches	Avg train loss: 0.787351	Avg train acc: 0.6538	Validation loss: 0.752536	Validation acc: 0.6832	(saved model)
+3 completed epochs, 9800 batches	Avg train loss: 0.774214	Avg train acc: 0.6719	Validation loss: 0.748176	Validation acc: 0.6821
+3 completed epochs, 9900 batches	Avg train loss: 0.769494	Avg train acc: 0.6631	Validation loss: 0.749483	Validation acc: 0.6875	(saved model)
+3 completed epochs, 10000 batches	Avg train loss: 0.758297	Avg train acc: 0.6809	Validation loss: 0.765874	Validation acc: 0.6762
+3 completed epochs, 10100 batches	Avg train loss: 0.804436	Avg train acc: 0.6381	Validation loss: 0.734391	Validation acc: 0.6898	(saved model)
+3 completed epochs, 10200 batches	Avg train loss: 0.784887	Avg train acc: 0.6591	Validation loss: 0.750510	Validation acc: 0.6800
+3 completed epochs, 10300 batches	Avg train loss: 0.791760	Avg train acc: 0.6556	Validation loss: 0.757721	Validation acc: 0.6782
+3 completed epochs, 10400 batches	Avg train loss: 0.783630	Avg train acc: 0.6541	Validation loss: 0.767389	Validation acc: 0.6776
+3 completed epochs, 10500 batches	Avg train loss: 0.780219	Avg train acc: 0.6584	Validation loss: 0.731910	Validation acc: 0.6893
+3 completed epochs, 10600 batches	Avg train loss: 0.797646	Avg train acc: 0.6534	Validation loss: 0.769574	Validation acc: 0.6714
+3 completed epochs, 10700 batches	Avg train loss: 0.803875	Avg train acc: 0.6428	Validation loss: 0.733333	Validation acc: 0.6946	(saved model)
+3 completed epochs, 10800 batches	Avg train loss: 0.782559	Avg train acc: 0.6634	Validation loss: 0.752164	Validation acc: 0.6791
+3 completed epochs, 10900 batches	Avg train loss: 0.796934	Avg train acc: 0.6450	Validation loss: 0.769663	Validation acc: 0.6704
+3 completed epochs, 11000 batches	Avg train loss: 0.777869	Avg train acc: 0.6650	Validation loss: 0.737458	Validation acc: 0.6879
+3 completed epochs, 11100 batches	Avg train loss: 0.751580	Avg train acc: 0.6650	Validation loss: 0.728282	Validation acc: 0.6957	(saved model)
+3 completed epochs, 11200 batches	Avg train loss: 0.791649	Avg train acc: 0.6447	Validation loss: 0.739044	Validation acc: 0.6873
+4 completed epochs, 11300 batches	Avg train loss: 0.759213	Avg train acc: 0.6756	Validation loss: 0.751182	Validation acc: 0.6828
+4 completed epochs, 11400 batches	Avg train loss: 0.758136	Avg train acc: 0.6672	Validation loss: 0.731872	Validation acc: 0.6892
+4 completed epochs, 11500 batches	Avg train loss: 0.737997	Avg train acc: 0.6822	Validation loss: 0.746531	Validation acc: 0.6858
+4 completed epochs, 11600 batches	Avg train loss: 0.754321	Avg train acc: 0.6787	Validation loss: 0.757048	Validation acc: 0.6835
+4 completed epochs, 11700 batches	Avg train loss: 0.737454	Avg train acc: 0.6791	Validation loss: 0.743875	Validation acc: 0.6934
+4 completed epochs, 11800 batches	Avg train loss: 0.758983	Avg train acc: 0.6675	Validation loss: 0.736346	Validation acc: 0.6933
+4 completed epochs, 11900 batches	Avg train loss: 0.734495	Avg train acc: 0.6853	Validation loss: 0.755035	Validation acc: 0.6840
+4 completed epochs, 12000 batches	Avg train loss: 0.770737	Avg train acc: 0.6647	Validation loss: 0.718801	Validation acc: 0.6964	(saved model)
+4 completed epochs, 12100 batches	Avg train loss: 0.758275	Avg train acc: 0.6697	Validation loss: 0.733677	Validation acc: 0.6908
+4 completed epochs, 12200 batches	Avg train loss: 0.752685	Avg train acc: 0.6781	Validation loss: 0.744886	Validation acc: 0.6881
+4 completed epochs, 12300 batches	Avg train loss: 0.760891	Avg train acc: 0.6716	Validation loss: 0.724596	Validation acc: 0.6951
+4 completed epochs, 12400 batches	Avg train loss: 0.767303	Avg train acc: 0.6684	Validation loss: 0.729657	Validation acc: 0.6923
+4 completed epochs, 12500 batches	Avg train loss: 0.757549	Avg train acc: 0.6725	Validation loss: 0.724705	Validation acc: 0.6997	(saved model)
+4 completed epochs, 12600 batches	Avg train loss: 0.764179	Avg train acc: 0.6716	Validation loss: 0.722255	Validation acc: 0.6965
+4 completed epochs, 12700 batches	Avg train loss: 0.744065	Avg train acc: 0.6737	Validation loss: 0.750514	Validation acc: 0.6871
+4 completed epochs, 12800 batches	Avg train loss: 0.771328	Avg train acc: 0.6659	Validation loss: 0.726448	Validation acc: 0.6986
+4 completed epochs, 12900 batches	Avg train loss: 0.760877	Avg train acc: 0.6784	Validation loss: 0.750880	Validation acc: 0.6881
+4 completed epochs, 13000 batches	Avg train loss: 0.756764	Avg train acc: 0.6725	Validation loss: 0.732361	Validation acc: 0.6920
+4 completed epochs, 13100 batches	Avg train loss: 0.762172	Avg train acc: 0.6731	Validation loss: 0.740724	Validation acc: 0.6908
+4 completed epochs, 13200 batches	Avg train loss: 0.747957	Avg train acc: 0.6816	Validation loss: 0.718642	Validation acc: 0.6986
+4 completed epochs, 13300 batches	Avg train loss: 0.738041	Avg train acc: 0.6775	Validation loss: 0.736936	Validation acc: 0.6952
+4 completed epochs, 13400 batches	Avg train loss: 0.764789	Avg train acc: 0.6644	Validation loss: 0.717650	Validation acc: 0.6978
+4 completed epochs, 13500 batches	Avg train loss: 0.752232	Avg train acc: 0.6731	Validation loss: 0.716407	Validation acc: 0.7028	(saved model)
+4 completed epochs, 13600 batches	Avg train loss: 0.757378	Avg train acc: 0.6703	Validation loss: 0.715421	Validation acc: 0.7020
+4 completed epochs, 13700 batches	Avg train loss: 0.738621	Avg train acc: 0.6872	Validation loss: 0.745664	Validation acc: 0.6894
+4 completed epochs, 13800 batches	Avg train loss: 0.758768	Avg train acc: 0.6744	Validation loss: 0.718702	Validation acc: 0.6996
+4 completed epochs, 13900 batches	Avg train loss: 0.737829	Avg train acc: 0.6863	Validation loss: 0.729581	Validation acc: 0.6942
+4 completed epochs, 14000 batches	Avg train loss: 0.755132	Avg train acc: 0.6778	Validation loss: 0.705659	Validation acc: 0.7037	(saved model)
+5 completed epochs, 14100 batches	Avg train loss: 0.738673	Avg train acc: 0.6887	Validation loss: 0.716968	Validation acc: 0.7028
+5 completed epochs, 14200 batches	Avg train loss: 0.719892	Avg train acc: 0.6950	Validation loss: 0.735684	Validation acc: 0.6913
+5 completed epochs, 14300 batches	Avg train loss: 0.737156	Avg train acc: 0.6766	Validation loss: 0.718819	Validation acc: 0.6969
+5 completed epochs, 14400 batches	Avg train loss: 0.741603	Avg train acc: 0.6791	Validation loss: 0.742136	Validation acc: 0.6876
+5 completed epochs, 14500 batches	Avg train loss: 0.725752	Avg train acc: 0.6928	Validation loss: 0.720243	Validation acc: 0.6958
+5 completed epochs, 14600 batches	Avg train loss: 0.717983	Avg train acc: 0.6953	Validation loss: 0.719200	Validation acc: 0.6975
+5 completed epochs, 14700 batches	Avg train loss: 0.754238	Avg train acc: 0.6719	Validation loss: 0.724479	Validation acc: 0.6979
+5 completed epochs, 14800 batches	Avg train loss: 0.743940	Avg train acc: 0.6781	Validation loss: 0.730064	Validation acc: 0.6957
+5 completed epochs, 14900 batches	Avg train loss: 0.736749	Avg train acc: 0.6800	Validation loss: 0.715322	Validation acc: 0.7002
+5 completed epochs, 15000 batches	Avg train loss: 0.713685	Avg train acc: 0.6916	Validation loss: 0.718621	Validation acc: 0.6988
+5 completed epochs, 15100 batches	Avg train loss: 0.740324	Avg train acc: 0.6834	Validation loss: 0.735283	Validation acc: 0.6909
+5 completed epochs, 15200 batches	Avg train loss: 0.734647	Avg train acc: 0.6828	Validation loss: 0.720500	Validation acc: 0.7003
+5 completed epochs, 15300 batches	Avg train loss: 0.730744	Avg train acc: 0.6869	Validation loss: 0.714682	Validation acc: 0.6979
+5 completed epochs, 15400 batches	Avg train loss: 0.750693	Avg train acc: 0.6766	Validation loss: 0.748095	Validation acc: 0.6887
+5 completed epochs, 15500 batches	Avg train loss: 0.723979	Avg train acc: 0.6984	Validation loss: 0.723251	Validation acc: 0.6991
+5 completed epochs, 15600 batches	Avg train loss: 0.723733	Avg train acc: 0.6909	Validation loss: 0.733004	Validation acc: 0.6934
+5 completed epochs, 15700 batches	Avg train loss: 0.722635	Avg train acc: 0.6884	Validation loss: 0.712661	Validation acc: 0.6991
+5 completed epochs, 15800 batches	Avg train loss: 0.742461	Avg train acc: 0.6813	Validation loss: 0.721523	Validation acc: 0.6970
+5 completed epochs, 15900 batches	Avg train loss: 0.737035	Avg train acc: 0.6916	Validation loss: 0.728415	Validation acc: 0.6962
+5 completed epochs, 16000 batches	Avg train loss: 0.709662	Avg train acc: 0.7050	Validation loss: 0.745034	Validation acc: 0.6899
+5 completed epochs, 16100 batches	Avg train loss: 0.720797	Avg train acc: 0.6972	Validation loss: 0.708868	Validation acc: 0.6996
+5 completed epochs, 16200 batches	Avg train loss: 0.722908	Avg train acc: 0.6906	Validation loss: 0.718131	Validation acc: 0.6972
+5 completed epochs, 16300 batches	Avg train loss: 0.737721	Avg train acc: 0.6841	Validation loss: 0.707839	Validation acc: 0.7045	(saved model)
+5 completed epochs, 16400 batches	Avg train loss: 0.723784	Avg train acc: 0.6881	Validation loss: 0.719150	Validation acc: 0.7031
+5 completed epochs, 16500 batches	Avg train loss: 0.725822	Avg train acc: 0.6887	Validation loss: 0.718073	Validation acc: 0.7037
+5 completed epochs, 16600 batches	Avg train loss: 0.744114	Avg train acc: 0.6922	Validation loss: 0.709135	Validation acc: 0.7024
+5 completed epochs, 16700 batches	Avg train loss: 0.726809	Avg train acc: 0.6828	Validation loss: 0.707177	Validation acc: 0.7046	(saved model)
+5 completed epochs, 16800 batches	Avg train loss: 0.756466	Avg train acc: 0.6697	Validation loss: 0.714339	Validation acc: 0.7013
+6 completed epochs, 16900 batches	Avg train loss: 0.718195	Avg train acc: 0.6972	Validation loss: 0.730865	Validation acc: 0.6977
+6 completed epochs, 17000 batches	Avg train loss: 0.696321	Avg train acc: 0.7166	Validation loss: 0.699149	Validation acc: 0.7095	(saved model)
+6 completed epochs, 17100 batches	Avg train loss: 0.708695	Avg train acc: 0.7059	Validation loss: 0.732440	Validation acc: 0.6974
+6 completed epochs, 17200 batches	Avg train loss: 0.697653	Avg train acc: 0.7047	Validation loss: 0.722713	Validation acc: 0.7003
+6 completed epochs, 17300 batches	Avg train loss: 0.715138	Avg train acc: 0.6972	Validation loss: 0.736944	Validation acc: 0.6973
+6 completed epochs, 17400 batches	Avg train loss: 0.701580	Avg train acc: 0.7119	Validation loss: 0.744027	Validation acc: 0.6949
+6 completed epochs, 17500 batches	Avg train loss: 0.717284	Avg train acc: 0.6919	Validation loss: 0.771392	Validation acc: 0.6812
+6 completed epochs, 17600 batches	Avg train loss: 0.698151	Avg train acc: 0.7128	Validation loss: 0.704918	Validation acc: 0.7035
+6 completed epochs, 17700 batches	Avg train loss: 0.710601	Avg train acc: 0.6956	Validation loss: 0.715924	Validation acc: 0.7044
+6 completed epochs, 17800 batches	Avg train loss: 0.700741	Avg train acc: 0.7050	Validation loss: 0.702692	Validation acc: 0.7054
+6 completed epochs, 17900 batches	Avg train loss: 0.701232	Avg train acc: 0.6928	Validation loss: 0.701160	Validation acc: 0.7073
+6 completed epochs, 18000 batches	Avg train loss: 0.712331	Avg train acc: 0.6959	Validation loss: 0.711546	Validation acc: 0.7050
+6 completed epochs, 18100 batches	Avg train loss: 0.705994	Avg train acc: 0.7009	Validation loss: 0.700707	Validation acc: 0.7105	(saved model)
+6 completed epochs, 18200 batches	Avg train loss: 0.730734	Avg train acc: 0.6922	Validation loss: 0.716103	Validation acc: 0.7046
+6 completed epochs, 18300 batches	Avg train loss: 0.707739	Avg train acc: 0.6991	Validation loss: 0.707382	Validation acc: 0.7071
+6 completed epochs, 18400 batches	Avg train loss: 0.720441	Avg train acc: 0.6894	Validation loss: 0.702333	Validation acc: 0.7110	(saved model)
+6 completed epochs, 18500 batches	Avg train loss: 0.704908	Avg train acc: 0.6997	Validation loss: 0.715497	Validation acc: 0.7062
+6 completed epochs, 18600 batches	Avg train loss: 0.730131	Avg train acc: 0.6869	Validation loss: 0.719026	Validation acc: 0.7009
+6 completed epochs, 18700 batches	Avg train loss: 0.692864	Avg train acc: 0.7075	Validation loss: 0.704894	Validation acc: 0.7108
+6 completed epochs, 18800 batches	Avg train loss: 0.704838	Avg train acc: 0.6975	Validation loss: 0.704788	Validation acc: 0.7115	(saved model)
+6 completed epochs, 18900 batches	Avg train loss: 0.724148	Avg train acc: 0.6891	Validation loss: 0.711625	Validation acc: 0.7082
+6 completed epochs, 19000 batches	Avg train loss: 0.734182	Avg train acc: 0.6956	Validation loss: 0.712867	Validation acc: 0.7071
+6 completed epochs, 19100 batches	Avg train loss: 0.710890	Avg train acc: 0.6869	Validation loss: 0.695596	Validation acc: 0.7127	(saved model)
+6 completed epochs, 19200 batches	Avg train loss: 0.717046	Avg train acc: 0.6909	Validation loss: 0.740351	Validation acc: 0.6956
+6 completed epochs, 19300 batches	Avg train loss: 0.704597	Avg train acc: 0.6969	Validation loss: 0.724344	Validation acc: 0.7018
+6 completed epochs, 19400 batches	Avg train loss: 0.733668	Avg train acc: 0.6822	Validation loss: 0.713631	Validation acc: 0.7037
+6 completed epochs, 19500 batches	Avg train loss: 0.732611	Avg train acc: 0.6803	Validation loss: 0.706891	Validation acc: 0.7077
+6 completed epochs, 19600 batches	Avg train loss: 0.715755	Avg train acc: 0.6909	Validation loss: 0.707901	Validation acc: 0.7053
+7 completed epochs, 19700 batches	Avg train loss: 0.713221	Avg train acc: 0.6966	Validation loss: 0.698493	Validation acc: 0.7122
+7 completed epochs, 19800 batches	Avg train loss: 0.713243	Avg train acc: 0.6922	Validation loss: 0.713222	Validation acc: 0.7058
+7 completed epochs, 19900 batches	Avg train loss: 0.669151	Avg train acc: 0.7222	Validation loss: 0.708201	Validation acc: 0.7088
+7 completed epochs, 20000 batches	Avg train loss: 0.700768	Avg train acc: 0.7006	Validation loss: 0.722143	Validation acc: 0.7022
+7 completed epochs, 20100 batches	Avg train loss: 0.688276	Avg train acc: 0.7016	Validation loss: 0.717567	Validation acc: 0.7079
+7 completed epochs, 20200 batches	Avg train loss: 0.676882	Avg train acc: 0.7200	Validation loss: 0.721905	Validation acc: 0.7078
+7 completed epochs, 20300 batches	Avg train loss: 0.703214	Avg train acc: 0.7066	Validation loss: 0.704480	Validation acc: 0.7087
+7 completed epochs, 20400 batches	Avg train loss: 0.694895	Avg train acc: 0.7137	Validation loss: 0.707595	Validation acc: 0.7065
+7 completed epochs, 20500 batches	Avg train loss: 0.702780	Avg train acc: 0.7028	Validation loss: 0.699029	Validation acc: 0.7106
+7 completed epochs, 20600 batches	Avg train loss: 0.703714	Avg train acc: 0.6997	Validation loss: 0.715778	Validation acc: 0.7050
+7 completed epochs, 20700 batches	Avg train loss: 0.687724	Avg train acc: 0.7037	Validation loss: 0.704885	Validation acc: 0.7084
+7 completed epochs, 20800 batches	Avg train loss: 0.717983	Avg train acc: 0.6928	Validation loss: 0.697099	Validation acc: 0.7114
+7 completed epochs, 20900 batches	Avg train loss: 0.695280	Avg train acc: 0.7053	Validation loss: 0.707420	Validation acc: 0.7081
+7 completed epochs, 21000 batches	Avg train loss: 0.710608	Avg train acc: 0.6950	Validation loss: 0.706997	Validation acc: 0.7097
+7 completed epochs, 21100 batches	Avg train loss: 0.714495	Avg train acc: 0.6984	Validation loss: 0.705323	Validation acc: 0.7080
+7 completed epochs, 21200 batches	Avg train loss: 0.704126	Avg train acc: 0.6997	Validation loss: 0.693636	Validation acc: 0.7150	(saved model)
+7 completed epochs, 21300 batches	Avg train loss: 0.675997	Avg train acc: 0.7184	Validation loss: 0.697836	Validation acc: 0.7174	(saved model)
+7 completed epochs, 21400 batches	Avg train loss: 0.702847	Avg train acc: 0.6997	Validation loss: 0.707439	Validation acc: 0.7072
+7 completed epochs, 21500 batches	Avg train loss: 0.712593	Avg train acc: 0.6966	Validation loss: 0.720117	Validation acc: 0.7038
+7 completed epochs, 21600 batches	Avg train loss: 0.701702	Avg train acc: 0.7109	Validation loss: 0.704653	Validation acc: 0.7082
+7 completed epochs, 21700 batches	Avg train loss: 0.692664	Avg train acc: 0.7056	Validation loss: 0.704308	Validation acc: 0.7093
+7 completed epochs, 21800 batches	Avg train loss: 0.710793	Avg train acc: 0.7037	Validation loss: 0.708813	Validation acc: 0.7078
+7 completed epochs, 21900 batches	Avg train loss: 0.693712	Avg train acc: 0.7044	Validation loss: 0.693578	Validation acc: 0.7144
+7 completed epochs, 22000 batches	Avg train loss: 0.675361	Avg train acc: 0.7244	Validation loss: 0.719863	Validation acc: 0.7043
+7 completed epochs, 22100 batches	Avg train loss: 0.719423	Avg train acc: 0.6891	Validation loss: 0.708343	Validation acc: 0.7111
+7 completed epochs, 22200 batches	Avg train loss: 0.703055	Avg train acc: 0.7025	Validation loss: 0.706739	Validation acc: 0.7081
+7 completed epochs, 22300 batches	Avg train loss: 0.694530	Avg train acc: 0.7200	Validation loss: 0.707699	Validation acc: 0.7108
+7 completed epochs, 22400 batches	Avg train loss: 0.711052	Avg train acc: 0.7022	Validation loss: 0.726690	Validation acc: 0.7050
+7 completed epochs, 22500 batches	Avg train loss: 0.693998	Avg train acc: 0.7059	Validation loss: 0.703661	Validation acc: 0.7123
+8 completed epochs, 22600 batches	Avg train loss: 0.670822	Avg train acc: 0.7170	Validation loss: 0.717386	Validation acc: 0.7087
+8 completed epochs, 22700 batches	Avg train loss: 0.664275	Avg train acc: 0.7284	Validation loss: 0.696364	Validation acc: 0.7131
+8 completed epochs, 22800 batches	Avg train loss: 0.686227	Avg train acc: 0.7097	Validation loss: 0.716114	Validation acc: 0.7096
+8 completed epochs, 22900 batches	Avg train loss: 0.685990	Avg train acc: 0.7122	Validation loss: 0.706039	Validation acc: 0.7097
+8 completed epochs, 23000 batches	Avg train loss: 0.673348	Avg train acc: 0.7222	Validation loss: 0.731895	Validation acc: 0.7013
+8 completed epochs, 23100 batches	Avg train loss: 0.666991	Avg train acc: 0.7312	Validation loss: 0.699086	Validation acc: 0.7117
+8 completed epochs, 23200 batches	Avg train loss: 0.689178	Avg train acc: 0.7209	Validation loss: 0.725635	Validation acc: 0.7030
+8 completed epochs, 23300 batches	Avg train loss: 0.680780	Avg train acc: 0.7163	Validation loss: 0.703089	Validation acc: 0.7110
+8 completed epochs, 23400 batches	Avg train loss: 0.660067	Avg train acc: 0.7169	Validation loss: 0.698871	Validation acc: 0.7153
+8 completed epochs, 23500 batches	Avg train loss: 0.662427	Avg train acc: 0.7291	Validation loss: 0.704974	Validation acc: 0.7137
+8 completed epochs, 23600 batches	Avg train loss: 0.703992	Avg train acc: 0.6944	Validation loss: 0.699989	Validation acc: 0.7097
+8 completed epochs, 23700 batches	Avg train loss: 0.680355	Avg train acc: 0.7219	Validation loss: 0.714008	Validation acc: 0.7080
+8 completed epochs, 23800 batches	Avg train loss: 0.661889	Avg train acc: 0.7197	Validation loss: 0.698175	Validation acc: 0.7132
+8 completed epochs, 23900 batches	Avg train loss: 0.687000	Avg train acc: 0.7137	Validation loss: 0.700230	Validation acc: 0.7121
+8 completed epochs, 24000 batches	Avg train loss: 0.707045	Avg train acc: 0.6937	Validation loss: 0.692636	Validation acc: 0.7108
+8 completed epochs, 24100 batches	Avg train loss: 0.690729	Avg train acc: 0.6991	Validation loss: 0.692092	Validation acc: 0.7122
+8 completed epochs, 24200 batches	Avg train loss: 0.709265	Avg train acc: 0.6937	Validation loss: 0.696135	Validation acc: 0.7135
+8 completed epochs, 24300 batches	Avg train loss: 0.674079	Avg train acc: 0.7141	Validation loss: 0.700981	Validation acc: 0.7142
+8 completed epochs, 24400 batches	Avg train loss: 0.699352	Avg train acc: 0.7100	Validation loss: 0.719106	Validation acc: 0.7031
+8 completed epochs, 24500 batches	Avg train loss: 0.674661	Avg train acc: 0.7091	Validation loss: 0.704017	Validation acc: 0.7131
+8 completed epochs, 24600 batches	Avg train loss: 0.669241	Avg train acc: 0.7159	Validation loss: 0.702661	Validation acc: 0.7111
+8 completed epochs, 24700 batches	Avg train loss: 0.682943	Avg train acc: 0.7234	Validation loss: 0.705513	Validation acc: 0.7108
+8 completed epochs, 24800 batches	Avg train loss: 0.687487	Avg train acc: 0.7141	Validation loss: 0.694895	Validation acc: 0.7116
+8 completed epochs, 24900 batches	Avg train loss: 0.666245	Avg train acc: 0.7144	Validation loss: 0.684777	Validation acc: 0.7164
+8 completed epochs, 25000 batches	Avg train loss: 0.690537	Avg train acc: 0.7084	Validation loss: 0.694911	Validation acc: 0.7153
+8 completed epochs, 25100 batches	Avg train loss: 0.709567	Avg train acc: 0.6963	Validation loss: 0.693981	Validation acc: 0.7181	(saved model)
+8 completed epochs, 25200 batches	Avg train loss: 0.689032	Avg train acc: 0.7078	Validation loss: 0.689690	Validation acc: 0.7161
+8 completed epochs, 25300 batches	Avg train loss: 0.741446	Avg train acc: 0.6847	Validation loss: 0.700577	Validation acc: 0.7121
+9 completed epochs, 25400 batches	Avg train loss: 0.680899	Avg train acc: 0.7132	Validation loss: 0.697425	Validation acc: 0.7128
+9 completed epochs, 25500 batches	Avg train loss: 0.678984	Avg train acc: 0.7191	Validation loss: 0.691297	Validation acc: 0.7150
+9 completed epochs, 25600 batches	Avg train loss: 0.653537	Avg train acc: 0.7275	Validation loss: 0.690815	Validation acc: 0.7183	(saved model)
+9 completed epochs, 25700 batches	Avg train loss: 0.662842	Avg train acc: 0.7222	Validation loss: 0.717057	Validation acc: 0.7097
+9 completed epochs, 25800 batches	Avg train loss: 0.647733	Avg train acc: 0.7281	Validation loss: 0.702568	Validation acc: 0.7161
+9 completed epochs, 25900 batches	Avg train loss: 0.663346	Avg train acc: 0.7200	Validation loss: 0.694378	Validation acc: 0.7191	(saved model)
+9 completed epochs, 26000 batches	Avg train loss: 0.681717	Avg train acc: 0.7147	Validation loss: 0.697882	Validation acc: 0.7117
+9 completed epochs, 26100 batches	Avg train loss: 0.660727	Avg train acc: 0.7228	Validation loss: 0.691048	Validation acc: 0.7184
+9 completed epochs, 26200 batches	Avg train loss: 0.678245	Avg train acc: 0.7103	Validation loss: 0.712573	Validation acc: 0.7061
+9 completed epochs, 26300 batches	Avg train loss: 0.671407	Avg train acc: 0.7269	Validation loss: 0.718206	Validation acc: 0.7055
+9 completed epochs, 26400 batches	Avg train loss: 0.676397	Avg train acc: 0.7231	Validation loss: 0.697722	Validation acc: 0.7164
+9 completed epochs, 26500 batches	Avg train loss: 0.693051	Avg train acc: 0.7081	Validation loss: 0.688904	Validation acc: 0.7174
+9 completed epochs, 26600 batches	Avg train loss: 0.671385	Avg train acc: 0.7166	Validation loss: 0.684684	Validation acc: 0.7193	(saved model)
+9 completed epochs, 26700 batches	Avg train loss: 0.677883	Avg train acc: 0.7206	Validation loss: 0.694115	Validation acc: 0.7147
+9 completed epochs, 26800 batches	Avg train loss: 0.688361	Avg train acc: 0.7069	Validation loss: 0.706147	Validation acc: 0.7108
+9 completed epochs, 26900 batches	Avg train loss: 0.678288	Avg train acc: 0.7175	Validation loss: 0.698731	Validation acc: 0.7175
+9 completed epochs, 27000 batches	Avg train loss: 0.658754	Avg train acc: 0.7203	Validation loss: 0.700160	Validation acc: 0.7161
+9 completed epochs, 27100 batches	Avg train loss: 0.661217	Avg train acc: 0.7241	Validation loss: 0.694536	Validation acc: 0.7165
+9 completed epochs, 27200 batches	Avg train loss: 0.672479	Avg train acc: 0.7131	Validation loss: 0.724269	Validation acc: 0.7078
+9 completed epochs, 27300 batches	Avg train loss: 0.678642	Avg train acc: 0.7106	Validation loss: 0.710893	Validation acc: 0.7132
+9 completed epochs, 27400 batches	Avg train loss: 0.691997	Avg train acc: 0.7003	Validation loss: 0.686805	Validation acc: 0.7165
+9 completed epochs, 27500 batches	Avg train loss: 0.673193	Avg train acc: 0.7128	Validation loss: 0.696548	Validation acc: 0.7168
+9 completed epochs, 27600 batches	Avg train loss: 0.697215	Avg train acc: 0.7003	Validation loss: 0.716250	Validation acc: 0.7102
+9 completed epochs, 27700 batches	Avg train loss: 0.663959	Avg train acc: 0.7247	Validation loss: 0.697924	Validation acc: 0.7138
+9 completed epochs, 27800 batches	Avg train loss: 0.686265	Avg train acc: 0.7087	Validation loss: 0.715532	Validation acc: 0.7079
+9 completed epochs, 27900 batches	Avg train loss: 0.689699	Avg train acc: 0.7069	Validation loss: 0.686030	Validation acc: 0.7182
+9 completed epochs, 28000 batches	Avg train loss: 0.701288	Avg train acc: 0.7087	Validation loss: 0.683517	Validation acc: 0.7180
+9 completed epochs, 28100 batches	Avg train loss: 0.655876	Avg train acc: 0.7288	Validation loss: 0.703887	Validation acc: 0.7114
+10 completed epochs, 28200 batches	Avg train loss: 0.663110	Avg train acc: 0.7220	Validation loss: 0.707693	Validation acc: 0.7163
+10 completed epochs, 28300 batches	Avg train loss: 0.662144	Avg train acc: 0.7228	Validation loss: 0.688838	Validation acc: 0.7206	(saved model)
+10 completed epochs, 28400 batches	Avg train loss: 0.654786	Avg train acc: 0.7231	Validation loss: 0.692379	Validation acc: 0.7198
+10 completed epochs, 28500 batches	Avg train loss: 0.657239	Avg train acc: 0.7297	Validation loss: 0.704372	Validation acc: 0.7158
+10 completed epochs, 28600 batches	Avg train loss: 0.627857	Avg train acc: 0.7375	Validation loss: 0.709440	Validation acc: 0.7132
+10 completed epochs, 28700 batches	Avg train loss: 0.643230	Avg train acc: 0.7322	Validation loss: 0.716128	Validation acc: 0.7109
+10 completed epochs, 28800 batches	Avg train loss: 0.657083	Avg train acc: 0.7294	Validation loss: 0.702118	Validation acc: 0.7185
+10 completed epochs, 28900 batches	Avg train loss: 0.663173	Avg train acc: 0.7266	Validation loss: 0.692115	Validation acc: 0.7175
+10 completed epochs, 29000 batches	Avg train loss: 0.669795	Avg train acc: 0.7163	Validation loss: 0.689962	Validation acc: 0.7141
+10 completed epochs, 29100 batches	Avg train loss: 0.662047	Avg train acc: 0.7216	Validation loss: 0.704141	Validation acc: 0.7116
+10 completed epochs, 29200 batches	Avg train loss: 0.664669	Avg train acc: 0.7191	Validation loss: 0.694024	Validation acc: 0.7137
+10 completed epochs, 29300 batches	Avg train loss: 0.651031	Avg train acc: 0.7244	Validation loss: 0.698128	Validation acc: 0.7182
+10 completed epochs, 29400 batches	Avg train loss: 0.663683	Avg train acc: 0.7222	Validation loss: 0.706107	Validation acc: 0.7129
+10 completed epochs, 29500 batches	Avg train loss: 0.670471	Avg train acc: 0.7184	Validation loss: 0.693719	Validation acc: 0.7162
+10 completed epochs, 29600 batches	Avg train loss: 0.664408	Avg train acc: 0.7225	Validation loss: 0.686257	Validation acc: 0.7211	(saved model)
+10 completed epochs, 29700 batches	Avg train loss: 0.664197	Avg train acc: 0.7234	Validation loss: 0.689633	Validation acc: 0.7184
+10 completed epochs, 29800 batches	Avg train loss: 0.663589	Avg train acc: 0.7212	Validation loss: 0.696394	Validation acc: 0.7164
+10 completed epochs, 29900 batches	Avg train loss: 0.673494	Avg train acc: 0.7169	Validation loss: 0.693911	Validation acc: 0.7169
+10 completed epochs, 30000 batches	Avg train loss: 0.677672	Avg train acc: 0.7203	Validation loss: 0.703457	Validation acc: 0.7132
+10 completed epochs, 30100 batches	Avg train loss: 0.654037	Avg train acc: 0.7294	Validation loss: 0.695205	Validation acc: 0.7173
+10 completed epochs, 30200 batches	Avg train loss: 0.655975	Avg train acc: 0.7262	Validation loss: 0.689244	Validation acc: 0.7174
+10 completed epochs, 30300 batches	Avg train loss: 0.671152	Avg train acc: 0.7231	Validation loss: 0.699929	Validation acc: 0.7105
+10 completed epochs, 30400 batches	Avg train loss: 0.664880	Avg train acc: 0.7231	Validation loss: 0.690606	Validation acc: 0.7167
+10 completed epochs, 30500 batches	Avg train loss: 0.645902	Avg train acc: 0.7341	Validation loss: 0.697831	Validation acc: 0.7188
+10 completed epochs, 30600 batches	Avg train loss: 0.668559	Avg train acc: 0.7206	Validation loss: 0.687595	Validation acc: 0.7190
+10 completed epochs, 30700 batches	Avg train loss: 0.664225	Avg train acc: 0.7181	Validation loss: 0.688662	Validation acc: 0.7159
+10 completed epochs, 30800 batches	Avg train loss: 0.662281	Avg train acc: 0.7222	Validation loss: 0.700193	Validation acc: 0.7136
+10 completed epochs, 30900 batches	Avg train loss: 0.669684	Avg train acc: 0.7231	Validation loss: 0.690660	Validation acc: 0.7176
+11 completed epochs, 31000 batches	Avg train loss: 0.657154	Avg train acc: 0.7292	Validation loss: 0.697096	Validation acc: 0.7166
+11 completed epochs, 31100 batches	Avg train loss: 0.620815	Avg train acc: 0.7462	Validation loss: 0.737231	Validation acc: 0.7019
+11 completed epochs, 31200 batches	Avg train loss: 0.628863	Avg train acc: 0.7431	Validation loss: 0.690132	Validation acc: 0.7204
+11 completed epochs, 31300 batches	Avg train loss: 0.652881	Avg train acc: 0.7256	Validation loss: 0.699117	Validation acc: 0.7190
+11 completed epochs, 31400 batches	Avg train loss: 0.663295	Avg train acc: 0.7181	Validation loss: 0.706225	Validation acc: 0.7157
+11 completed epochs, 31500 batches	Avg train loss: 0.656664	Avg train acc: 0.7178	Validation loss: 0.706806	Validation acc: 0.7181
+11 completed epochs, 31600 batches	Avg train loss: 0.651862	Avg train acc: 0.7312	Validation loss: 0.717738	Validation acc: 0.7113
+11 completed epochs, 31700 batches	Avg train loss: 0.628251	Avg train acc: 0.7403	Validation loss: 0.699028	Validation acc: 0.7174
+11 completed epochs, 31800 batches	Avg train loss: 0.640553	Avg train acc: 0.7316	Validation loss: 0.698186	Validation acc: 0.7151
+11 completed epochs, 31900 batches	Avg train loss: 0.634853	Avg train acc: 0.7378	Validation loss: 0.689903	Validation acc: 0.7164
+11 completed epochs, 32000 batches	Avg train loss: 0.657294	Avg train acc: 0.7253	Validation loss: 0.705453	Validation acc: 0.7176
+11 completed epochs, 32100 batches	Avg train loss: 0.634532	Avg train acc: 0.7400	Validation loss: 0.691493	Validation acc: 0.7194
+11 completed epochs, 32200 batches	Avg train loss: 0.662582	Avg train acc: 0.7256	Validation loss: 0.700081	Validation acc: 0.7160
+11 completed epochs, 32300 batches	Avg train loss: 0.642496	Avg train acc: 0.7331	Validation loss: 0.720766	Validation acc: 0.7153
+11 completed epochs, 32400 batches	Avg train loss: 0.661207	Avg train acc: 0.7228	Validation loss: 0.701064	Validation acc: 0.7175
+11 completed epochs, 32500 batches	Avg train loss: 0.647839	Avg train acc: 0.7338	Validation loss: 0.712935	Validation acc: 0.7127
+11 completed epochs, 32600 batches	Avg train loss: 0.655130	Avg train acc: 0.7141	Validation loss: 0.717917	Validation acc: 0.7091
+11 completed epochs, 32700 batches	Avg train loss: 0.654017	Avg train acc: 0.7278	Validation loss: 0.700716	Validation acc: 0.7166
+11 completed epochs, 32800 batches	Avg train loss: 0.639151	Avg train acc: 0.7300	Validation loss: 0.700865	Validation acc: 0.7169
+11 completed epochs, 32900 batches	Avg train loss: 0.655637	Avg train acc: 0.7256	Validation loss: 0.683441	Validation acc: 0.7219	(saved model)
+11 completed epochs, 33000 batches	Avg train loss: 0.671191	Avg train acc: 0.7163	Validation loss: 0.693026	Validation acc: 0.7184
+11 completed epochs, 33100 batches	Avg train loss: 0.662700	Avg train acc: 0.7209	Validation loss: 0.709912	Validation acc: 0.7132
+11 completed epochs, 33200 batches	Avg train loss: 0.629870	Avg train acc: 0.7397	Validation loss: 0.704926	Validation acc: 0.7189
+11 completed epochs, 33300 batches	Avg train loss: 0.670852	Avg train acc: 0.7197	Validation loss: 0.699455	Validation acc: 0.7148
+11 completed epochs, 33400 batches	Avg train loss: 0.649154	Avg train acc: 0.7325	Validation loss: 0.683671	Validation acc: 0.7204
+11 completed epochs, 33500 batches	Avg train loss: 0.657264	Avg train acc: 0.7231	Validation loss: 0.692796	Validation acc: 0.7151
+11 completed epochs, 33600 batches	Avg train loss: 0.675382	Avg train acc: 0.7113	Validation loss: 0.692747	Validation acc: 0.7173
+11 completed epochs, 33700 batches	Avg train loss: 0.668201	Avg train acc: 0.7059	Validation loss: 0.703890	Validation acc: 0.7164
+12 completed epochs, 33800 batches	Avg train loss: 0.656947	Avg train acc: 0.7261	Validation loss: 0.692023	Validation acc: 0.7228	(saved model)
+12 completed epochs, 33900 batches	Avg train loss: 0.642400	Avg train acc: 0.7328	Validation loss: 0.689717	Validation acc: 0.7200
+12 completed epochs, 34000 batches	Avg train loss: 0.639452	Avg train acc: 0.7378	Validation loss: 0.684547	Validation acc: 0.7208
+12 completed epochs, 34100 batches	Avg train loss: 0.630231	Avg train acc: 0.7344	Validation loss: 0.709649	Validation acc: 0.7149
+12 completed epochs, 34200 batches	Avg train loss: 0.615243	Avg train acc: 0.7381	Validation loss: 0.710498	Validation acc: 0.7137
+12 completed epochs, 34300 batches	Avg train loss: 0.630736	Avg train acc: 0.7428	Validation loss: 0.684668	Validation acc: 0.7200
+12 completed epochs, 34400 batches	Avg train loss: 0.636400	Avg train acc: 0.7406	Validation loss: 0.697194	Validation acc: 0.7180
+12 completed epochs, 34500 batches	Avg train loss: 0.657195	Avg train acc: 0.7288	Validation loss: 0.713221	Validation acc: 0.7101
+12 completed epochs, 34600 batches	Avg train loss: 0.638963	Avg train acc: 0.7294	Validation loss: 0.705560	Validation acc: 0.7147
+12 completed epochs, 34700 batches	Avg train loss: 0.643037	Avg train acc: 0.7322	Validation loss: 0.699516	Validation acc: 0.7178
+12 completed epochs, 34800 batches	Avg train loss: 0.632557	Avg train acc: 0.7366	Validation loss: 0.700881	Validation acc: 0.7176
+12 completed epochs, 34900 batches	Avg train loss: 0.635347	Avg train acc: 0.7369	Validation loss: 0.695571	Validation acc: 0.7182
+12 completed epochs, 35000 batches	Avg train loss: 0.665107	Avg train acc: 0.7194	Validation loss: 0.696887	Validation acc: 0.7157
+12 completed epochs, 35100 batches	Avg train loss: 0.630981	Avg train acc: 0.7400	Validation loss: 0.705745	Validation acc: 0.7185
+12 completed epochs, 35200 batches	Avg train loss: 0.644784	Avg train acc: 0.7297	Validation loss: 0.704553	Validation acc: 0.7176
+12 completed epochs, 35300 batches	Avg train loss: 0.648974	Avg train acc: 0.7284	Validation loss: 0.700099	Validation acc: 0.7162
+12 completed epochs, 35400 batches	Avg train loss: 0.654270	Avg train acc: 0.7288	Validation loss: 0.720483	Validation acc: 0.7126
+12 completed epochs, 35500 batches	Avg train loss: 0.661447	Avg train acc: 0.7272	Validation loss: 0.681013	Validation acc: 0.7235	(saved model)
+12 completed epochs, 35600 batches	Avg train loss: 0.643652	Avg train acc: 0.7309	Validation loss: 0.714226	Validation acc: 0.7171
+12 completed epochs, 35700 batches	Avg train loss: 0.634639	Avg train acc: 0.7303	Validation loss: 0.708368	Validation acc: 0.7175
+12 completed epochs, 35800 batches	Avg train loss: 0.657460	Avg train acc: 0.7291	Validation loss: 0.687307	Validation acc: 0.7188
+12 completed epochs, 35900 batches	Avg train loss: 0.653181	Avg train acc: 0.7306	Validation loss: 0.699497	Validation acc: 0.7184
+12 completed epochs, 36000 batches	Avg train loss: 0.637747	Avg train acc: 0.7347	Validation loss: 0.687501	Validation acc: 0.7211
+12 completed epochs, 36100 batches	Avg train loss: 0.654884	Avg train acc: 0.7250	Validation loss: 0.688555	Validation acc: 0.7191
+12 completed epochs, 36200 batches	Avg train loss: 0.650137	Avg train acc: 0.7294	Validation loss: 0.697911	Validation acc: 0.7158
+12 completed epochs, 36300 batches	Avg train loss: 0.634044	Avg train acc: 0.7416	Validation loss: 0.690838	Validation acc: 0.7188
+12 completed epochs, 36400 batches	Avg train loss: 0.651955	Avg train acc: 0.7262	Validation loss: 0.689792	Validation acc: 0.7192
+12 completed epochs, 36500 batches	Avg train loss: 0.663110	Avg train acc: 0.7272	Validation loss: 0.699348	Validation acc: 0.7156
+13 completed epochs, 36600 batches	Avg train loss: 0.628009	Avg train acc: 0.7443	Validation loss: 0.694681	Validation acc: 0.7205
+13 completed epochs, 36700 batches	Avg train loss: 0.615640	Avg train acc: 0.7497	Validation loss: 0.702770	Validation acc: 0.7178
+13 completed epochs, 36800 batches	Avg train loss: 0.634051	Avg train acc: 0.7447	Validation loss: 0.691831	Validation acc: 0.7203
+13 completed epochs, 36900 batches	Avg train loss: 0.633426	Avg train acc: 0.7397	Validation loss: 0.706874	Validation acc: 0.7142
+13 completed epochs, 37000 batches	Avg train loss: 0.659205	Avg train acc: 0.7172	Validation loss: 0.694546	Validation acc: 0.7184
+13 completed epochs, 37100 batches	Avg train loss: 0.609443	Avg train acc: 0.7541	Validation loss: 0.701407	Validation acc: 0.7152
+13 completed epochs, 37200 batches	Avg train loss: 0.634482	Avg train acc: 0.7281	Validation loss: 0.708376	Validation acc: 0.7157
+13 completed epochs, 37300 batches	Avg train loss: 0.615673	Avg train acc: 0.7388	Validation loss: 0.721259	Validation acc: 0.7157
+13 completed epochs, 37400 batches	Avg train loss: 0.625352	Avg train acc: 0.7447	Validation loss: 0.709670	Validation acc: 0.7167
+13 completed epochs, 37500 batches	Avg train loss: 0.627739	Avg train acc: 0.7406	Validation loss: 0.689506	Validation acc: 0.7244	(saved model)
+13 completed epochs, 37600 batches	Avg train loss: 0.614376	Avg train acc: 0.7466	Validation loss: 0.695145	Validation acc: 0.7193
+13 completed epochs, 37700 batches	Avg train loss: 0.630450	Avg train acc: 0.7338	Validation loss: 0.710125	Validation acc: 0.7155
+13 completed epochs, 37800 batches	Avg train loss: 0.606240	Avg train acc: 0.7544	Validation loss: 0.699265	Validation acc: 0.7184
+13 completed epochs, 37900 batches	Avg train loss: 0.648779	Avg train acc: 0.7303	Validation loss: 0.688932	Validation acc: 0.7213
+13 completed epochs, 38000 batches	Avg train loss: 0.640364	Avg train acc: 0.7341	Validation loss: 0.693455	Validation acc: 0.7181
+13 completed epochs, 38100 batches	Avg train loss: 0.650450	Avg train acc: 0.7247	Validation loss: 0.708411	Validation acc: 0.7151
+13 completed epochs, 38200 batches	Avg train loss: 0.639350	Avg train acc: 0.7322	Validation loss: 0.706810	Validation acc: 0.7170
+13 completed epochs, 38300 batches	Avg train loss: 0.638761	Avg train acc: 0.7344	Validation loss: 0.704406	Validation acc: 0.7193
+13 completed epochs, 38400 batches	Avg train loss: 0.614550	Avg train acc: 0.7522	Validation loss: 0.700373	Validation acc: 0.7201
+13 completed epochs, 38500 batches	Avg train loss: 0.634067	Avg train acc: 0.7372	Validation loss: 0.695602	Validation acc: 0.7163
+13 completed epochs, 38600 batches	Avg train loss: 0.626212	Avg train acc: 0.7447	Validation loss: 0.691060	Validation acc: 0.7217
+13 completed epochs, 38700 batches	Avg train loss: 0.639368	Avg train acc: 0.7397	Validation loss: 0.688004	Validation acc: 0.7272	(saved model)
+13 completed epochs, 38800 batches	Avg train loss: 0.652024	Avg train acc: 0.7266	Validation loss: 0.706683	Validation acc: 0.7197
+13 completed epochs, 38900 batches	Avg train loss: 0.616164	Avg train acc: 0.7459	Validation loss: 0.690600	Validation acc: 0.7209
+13 completed epochs, 39000 batches	Avg train loss: 0.649236	Avg train acc: 0.7281	Validation loss: 0.692356	Validation acc: 0.7206
+13 completed epochs, 39100 batches	Avg train loss: 0.660911	Avg train acc: 0.7266	Validation loss: 0.690085	Validation acc: 0.7229
+13 completed epochs, 39200 batches	Avg train loss: 0.651462	Avg train acc: 0.7297	Validation loss: 0.698422	Validation acc: 0.7174
+13 completed epochs, 39300 batches	Avg train loss: 0.658636	Avg train acc: 0.7253	Validation loss: 0.685031	Validation acc: 0.7213
+14 completed epochs, 39400 batches	Avg train loss: 0.638460	Avg train acc: 0.7418	Validation loss: 0.705132	Validation acc: 0.7140
+14 completed epochs, 39500 batches	Avg train loss: 0.589995	Avg train acc: 0.7694	Validation loss: 0.698326	Validation acc: 0.7179
+14 completed epochs, 39600 batches	Avg train loss: 0.597162	Avg train acc: 0.7431	Validation loss: 0.706026	Validation acc: 0.7164
+14 completed epochs, 39700 batches	Avg train loss: 0.638574	Avg train acc: 0.7347	Validation loss: 0.702786	Validation acc: 0.7162
+14 completed epochs, 39800 batches	Avg train loss: 0.626195	Avg train acc: 0.7384	Validation loss: 0.692532	Validation acc: 0.7198
+14 completed epochs, 39900 batches	Avg train loss: 0.635941	Avg train acc: 0.7444	Validation loss: 0.701756	Validation acc: 0.7189
+14 completed epochs, 40000 batches	Avg train loss: 0.620448	Avg train acc: 0.7416	Validation loss: 0.698566	Validation acc: 0.7165
+14 completed epochs, 40100 batches	Avg train loss: 0.639747	Avg train acc: 0.7384	Validation loss: 0.694727	Validation acc: 0.7180
+14 completed epochs, 40200 batches	Avg train loss: 0.634900	Avg train acc: 0.7409	Validation loss: 0.697723	Validation acc: 0.7182
+14 completed epochs, 40300 batches	Avg train loss: 0.615004	Avg train acc: 0.7478	Validation loss: 0.712940	Validation acc: 0.7119
+14 completed epochs, 40400 batches	Avg train loss: 0.613309	Avg train acc: 0.7506	Validation loss: 0.693731	Validation acc: 0.7203
+14 completed epochs, 40500 batches	Avg train loss: 0.633845	Avg train acc: 0.7259	Validation loss: 0.708622	Validation acc: 0.7158
+14 completed epochs, 40600 batches	Avg train loss: 0.613063	Avg train acc: 0.7503	Validation loss: 0.705276	Validation acc: 0.7145
+14 completed epochs, 40700 batches	Avg train loss: 0.615953	Avg train acc: 0.7422	Validation loss: 0.695294	Validation acc: 0.7200
+14 completed epochs, 40800 batches	Avg train loss: 0.625949	Avg train acc: 0.7488	Validation loss: 0.690155	Validation acc: 0.7193
+14 completed epochs, 40900 batches	Avg train loss: 0.615972	Avg train acc: 0.7531	Validation loss: 0.693927	Validation acc: 0.7184
+14 completed epochs, 41000 batches	Avg train loss: 0.621805	Avg train acc: 0.7419	Validation loss: 0.736391	Validation acc: 0.7027
+14 completed epochs, 41100 batches	Avg train loss: 0.624876	Avg train acc: 0.7412	Validation loss: 0.692017	Validation acc: 0.7196
+14 completed epochs, 41200 batches	Avg train loss: 0.627652	Avg train acc: 0.7400	Validation loss: 0.689221	Validation acc: 0.7221
+14 completed epochs, 41300 batches	Avg train loss: 0.627299	Avg train acc: 0.7409	Validation loss: 0.699035	Validation acc: 0.7193
+14 completed epochs, 41400 batches	Avg train loss: 0.666906	Avg train acc: 0.7269	Validation loss: 0.694179	Validation acc: 0.7207
+14 completed epochs, 41500 batches	Avg train loss: 0.621893	Avg train acc: 0.7406	Validation loss: 0.696019	Validation acc: 0.7199
+14 completed epochs, 41600 batches	Avg train loss: 0.624623	Avg train acc: 0.7400	Validation loss: 0.685041	Validation acc: 0.7232
+14 completed epochs, 41700 batches	Avg train loss: 0.629214	Avg train acc: 0.7353	Validation loss: 0.696998	Validation acc: 0.7242
+14 completed epochs, 41800 batches	Avg train loss: 0.629021	Avg train acc: 0.7406	Validation loss: 0.686294	Validation acc: 0.7229
+14 completed epochs, 41900 batches	Avg train loss: 0.607891	Avg train acc: 0.7444	Validation loss: 0.688274	Validation acc: 0.7218
+14 completed epochs, 42000 batches	Avg train loss: 0.624975	Avg train acc: 0.7344	Validation loss: 0.703396	Validation acc: 0.7196
+14 completed epochs, 42100 batches	Avg train loss: 0.635208	Avg train acc: 0.7328	Validation loss: 0.711922	Validation acc: 0.7133
+15 completed epochs, 42200 batches	Avg train loss: 0.650706	Avg train acc: 0.7286	Validation loss: 0.698506	Validation acc: 0.7174
+15 completed epochs, 42300 batches	Avg train loss: 0.588528	Avg train acc: 0.7606	Validation loss: 0.711797	Validation acc: 0.7145
+15 completed epochs, 42400 batches	Avg train loss: 0.626867	Avg train acc: 0.7397	Validation loss: 0.685481	Validation acc: 0.7181
+15 completed epochs, 42500 batches	Avg train loss: 0.606424	Avg train acc: 0.7481	Validation loss: 0.698110	Validation acc: 0.7180
+15 completed epochs, 42600 batches	Avg train loss: 0.634771	Avg train acc: 0.7409	Validation loss: 0.696291	Validation acc: 0.7155
+15 completed epochs, 42700 batches	Avg train loss: 0.596315	Avg train acc: 0.7559	Validation loss: 0.701685	Validation acc: 0.7169
+15 completed epochs, 42800 batches	Avg train loss: 0.623287	Avg train acc: 0.7425	Validation loss: 0.689789	Validation acc: 0.7237
+15 completed epochs, 42900 batches	Avg train loss: 0.608107	Avg train acc: 0.7566	Validation loss: 0.695929	Validation acc: 0.7251
+15 completed epochs, 43000 batches	Avg train loss: 0.604542	Avg train acc: 0.7478	Validation loss: 0.698438	Validation acc: 0.7185
+15 completed epochs, 43100 batches	Avg train loss: 0.617424	Avg train acc: 0.7475	Validation loss: 0.685615	Validation acc: 0.7223
+15 completed epochs, 43200 batches	Avg train loss: 0.597658	Avg train acc: 0.7494	Validation loss: 0.693678	Validation acc: 0.7221
+15 completed epochs, 43300 batches	Avg train loss: 0.618122	Avg train acc: 0.7441	Validation loss: 0.688998	Validation acc: 0.7180
+15 completed epochs, 43400 batches	Avg train loss: 0.637742	Avg train acc: 0.7384	Validation loss: 0.699153	Validation acc: 0.7163
+15 completed epochs, 43500 batches	Avg train loss: 0.603320	Avg train acc: 0.7622	Validation loss: 0.695273	Validation acc: 0.7196
+15 completed epochs, 43600 batches	Avg train loss: 0.618927	Avg train acc: 0.7425	Validation loss: 0.702963	Validation acc: 0.7194
+15 completed epochs, 43700 batches	Avg train loss: 0.610042	Avg train acc: 0.7534	Validation loss: 0.715793	Validation acc: 0.7136
+15 completed epochs, 43800 batches	Avg train loss: 0.611803	Avg train acc: 0.7462	Validation loss: 0.701362	Validation acc: 0.7167
+15 completed epochs, 43900 batches	Avg train loss: 0.617554	Avg train acc: 0.7497	Validation loss: 0.696611	Validation acc: 0.7180
+15 completed epochs, 44000 batches	Avg train loss: 0.606312	Avg train acc: 0.7516	Validation loss: 0.698962	Validation acc: 0.7196
+15 completed epochs, 44100 batches	Avg train loss: 0.646477	Avg train acc: 0.7369	Validation loss: 0.690634	Validation acc: 0.7150
+15 completed epochs, 44200 batches	Avg train loss: 0.620429	Avg train acc: 0.7403	Validation loss: 0.689758	Validation acc: 0.7194
+15 completed epochs, 44300 batches	Avg train loss: 0.616954	Avg train acc: 0.7481	Validation loss: 0.695626	Validation acc: 0.7183
+15 completed epochs, 44400 batches	Avg train loss: 0.601920	Avg train acc: 0.7541	Validation loss: 0.714336	Validation acc: 0.7152
+15 completed epochs, 44500 batches	Avg train loss: 0.611267	Avg train acc: 0.7428	Validation loss: 0.725720	Validation acc: 0.7069
+15 completed epochs, 44600 batches	Avg train loss: 0.610682	Avg train acc: 0.7431	Validation loss: 0.704031	Validation acc: 0.7175
+15 completed epochs, 44700 batches	Avg train loss: 0.618431	Avg train acc: 0.7422	Validation loss: 0.714363	Validation acc: 0.7156
+15 completed epochs, 44800 batches	Avg train loss: 0.637010	Avg train acc: 0.7322	Validation loss: 0.720226	Validation acc: 0.7068
+15 completed epochs, 44900 batches	Avg train loss: 0.633362	Avg train acc: 0.7434	Validation loss: 0.689688	Validation acc: 0.7204
+15 completed epochs, 45000 batches	Avg train loss: 0.622327	Avg train acc: 0.7534	Validation loss: 0.730366	Validation acc: 0.7028
+16 completed epochs, 45100 batches	Avg train loss: 0.594855	Avg train acc: 0.7631	Validation loss: 0.703073	Validation acc: 0.7177
+16 completed epochs, 45200 batches	Avg train loss: 0.606421	Avg train acc: 0.7416	Validation loss: 0.695280	Validation acc: 0.7179
+16 completed epochs, 45300 batches	Avg train loss: 0.607856	Avg train acc: 0.7434	Validation loss: 0.706654	Validation acc: 0.7185
+16 completed epochs, 45400 batches	Avg train loss: 0.611353	Avg train acc: 0.7384	Validation loss: 0.708412	Validation acc: 0.7162
+16 completed epochs, 45500 batches	Avg train loss: 0.590672	Avg train acc: 0.7625	Validation loss: 0.719392	Validation acc: 0.7143
+16 completed epochs, 45600 batches	Avg train loss: 0.606859	Avg train acc: 0.7481	Validation loss: 0.719802	Validation acc: 0.7093
+16 completed epochs, 45700 batches	Avg train loss: 0.587900	Avg train acc: 0.7569	Validation loss: 0.706651	Validation acc: 0.7176
+16 completed epochs, 45800 batches	Avg train loss: 0.624919	Avg train acc: 0.7531	Validation loss: 0.709260	Validation acc: 0.7125
+16 completed epochs, 45900 batches	Avg train loss: 0.579514	Avg train acc: 0.7662	Validation loss: 0.699945	Validation acc: 0.7175
+16 completed epochs, 46000 batches	Avg train loss: 0.616736	Avg train acc: 0.7419	Validation loss: 0.693311	Validation acc: 0.7175
+16 completed epochs, 46100 batches	Avg train loss: 0.614777	Avg train acc: 0.7438	Validation loss: 0.689417	Validation acc: 0.7193
+16 completed epochs, 46200 batches	Avg train loss: 0.594161	Avg train acc: 0.7588	Validation loss: 0.695871	Validation acc: 0.7176
+16 completed epochs, 46300 batches	Avg train loss: 0.594194	Avg train acc: 0.7506	Validation loss: 0.690963	Validation acc: 0.7213
+16 completed epochs, 46400 batches	Avg train loss: 0.599146	Avg train acc: 0.7562	Validation loss: 0.704879	Validation acc: 0.7187
+16 completed epochs, 46500 batches	Avg train loss: 0.625468	Avg train acc: 0.7431	Validation loss: 0.709758	Validation acc: 0.7164
+16 completed epochs, 46600 batches	Avg train loss: 0.601791	Avg train acc: 0.7538	Validation loss: 0.699131	Validation acc: 0.7169
+16 completed epochs, 46700 batches	Avg train loss: 0.609777	Avg train acc: 0.7516	Validation loss: 0.694268	Validation acc: 0.7217
+16 completed epochs, 46800 batches	Avg train loss: 0.621986	Avg train acc: 0.7441	Validation loss: 0.695354	Validation acc: 0.7195
+16 completed epochs, 46900 batches	Avg train loss: 0.600925	Avg train acc: 0.7566	Validation loss: 0.696328	Validation acc: 0.7220
+16 completed epochs, 47000 batches	Avg train loss: 0.613158	Avg train acc: 0.7428	Validation loss: 0.690677	Validation acc: 0.7205
+16 completed epochs, 47100 batches	Avg train loss: 0.607904	Avg train acc: 0.7509	Validation loss: 0.689551	Validation acc: 0.7227
+16 completed epochs, 47200 batches	Avg train loss: 0.622496	Avg train acc: 0.7322	Validation loss: 0.701409	Validation acc: 0.7166
+16 completed epochs, 47300 batches	Avg train loss: 0.622104	Avg train acc: 0.7569	Validation loss: 0.696984	Validation acc: 0.7195
+16 completed epochs, 47400 batches	Avg train loss: 0.626501	Avg train acc: 0.7434	Validation loss: 0.713098	Validation acc: 0.7112
+16 completed epochs, 47500 batches	Avg train loss: 0.627152	Avg train acc: 0.7372	Validation loss: 0.687620	Validation acc: 0.7205
+16 completed epochs, 47600 batches	Avg train loss: 0.625030	Avg train acc: 0.7391	Validation loss: 0.708190	Validation acc: 0.7138
+16 completed epochs, 47700 batches	Avg train loss: 0.625890	Avg train acc: 0.7444	Validation loss: 0.693570	Validation acc: 0.7202
+16 completed epochs, 47800 batches	Avg train loss: 0.615007	Avg train acc: 0.7422	Validation loss: 0.677609	Validation acc: 0.7226
+17 completed epochs, 47900 batches	Avg train loss: 0.565013	Avg train acc: 0.7662	Validation loss: 0.707190	Validation acc: 0.7192
+17 completed epochs, 48000 batches	Avg train loss: 0.587963	Avg train acc: 0.7653	Validation loss: 0.703861	Validation acc: 0.7172
+17 completed epochs, 48100 batches	Avg train loss: 0.584791	Avg train acc: 0.7516	Validation loss: 0.707079	Validation acc: 0.7183
+17 completed epochs, 48200 batches	Avg train loss: 0.627375	Avg train acc: 0.7362	Validation loss: 0.707083	Validation acc: 0.7149
+17 completed epochs, 48300 batches	Avg train loss: 0.608881	Avg train acc: 0.7531	Validation loss: 0.730133	Validation acc: 0.7049
+17 completed epochs, 48400 batches	Avg train loss: 0.584080	Avg train acc: 0.7606	Validation loss: 0.708230	Validation acc: 0.7164
+17 completed epochs, 48500 batches	Avg train loss: 0.587619	Avg train acc: 0.7681	Validation loss: 0.702146	Validation acc: 0.7166
+17 completed epochs, 48600 batches	Avg train loss: 0.603752	Avg train acc: 0.7438	Validation loss: 0.702633	Validation acc: 0.7147
+17 completed epochs, 48700 batches	Avg train loss: 0.608420	Avg train acc: 0.7506	Validation loss: 0.719049	Validation acc: 0.7062
+17 completed epochs, 48800 batches	Avg train loss: 0.606462	Avg train acc: 0.7528	Validation loss: 0.705920	Validation acc: 0.7159
+17 completed epochs, 48900 batches	Avg train loss: 0.599626	Avg train acc: 0.7547	Validation loss: 0.702912	Validation acc: 0.7151
+17 completed epochs, 49000 batches	Avg train loss: 0.588711	Avg train acc: 0.7584	Validation loss: 0.705595	Validation acc: 0.7133
+17 completed epochs, 49100 batches	Avg train loss: 0.598237	Avg train acc: 0.7525	Validation loss: 0.702189	Validation acc: 0.7181
+17 completed epochs, 49200 batches	Avg train loss: 0.601618	Avg train acc: 0.7475	Validation loss: 0.691566	Validation acc: 0.7206
+17 completed epochs, 49300 batches	Avg train loss: 0.605506	Avg train acc: 0.7509	Validation loss: 0.706083	Validation acc: 0.7151
+17 completed epochs, 49400 batches	Avg train loss: 0.608236	Avg train acc: 0.7450	Validation loss: 0.710313	Validation acc: 0.7102
+17 completed epochs, 49500 batches	Avg train loss: 0.578021	Avg train acc: 0.7625	Validation loss: 0.722196	Validation acc: 0.7134
+17 completed epochs, 49600 batches	Avg train loss: 0.592216	Avg train acc: 0.7619	Validation loss: 0.716294	Validation acc: 0.7131
+17 completed epochs, 49700 batches	Avg train loss: 0.602931	Avg train acc: 0.7459	Validation loss: 0.725551	Validation acc: 0.7106
+17 completed epochs, 49800 batches	Avg train loss: 0.607445	Avg train acc: 0.7538	Validation loss: 0.708505	Validation acc: 0.7152
+17 completed epochs, 49900 batches	Avg train loss: 0.641754	Avg train acc: 0.7350	Validation loss: 0.693025	Validation acc: 0.7174
+17 completed epochs, 50000 batches	Avg train loss: 0.598527	Avg train acc: 0.7512	Validation loss: 0.715034	Validation acc: 0.7129
+17 completed epochs, 50100 batches	Avg train loss: 0.606196	Avg train acc: 0.7509	Validation loss: 0.697438	Validation acc: 0.7207
+17 completed epochs, 50200 batches	Avg train loss: 0.596033	Avg train acc: 0.7559	Validation loss: 0.700688	Validation acc: 0.7196
+17 completed epochs, 50300 batches	Avg train loss: 0.607026	Avg train acc: 0.7497	Validation loss: 0.688235	Validation acc: 0.7195
+17 completed epochs, 50400 batches	Avg train loss: 0.605141	Avg train acc: 0.7428	Validation loss: 0.709197	Validation acc: 0.7172
+17 completed epochs, 50500 batches	Avg train loss: 0.620773	Avg train acc: 0.7372	Validation loss: 0.700158	Validation acc: 0.7183
+17 completed epochs, 50600 batches	Avg train loss: 0.612393	Avg train acc: 0.7494	Validation loss: 0.709312	Validation acc: 0.7160
+18 completed epochs, 50700 batches	Avg train loss: 0.586303	Avg train acc: 0.7615	Validation loss: 0.732911	Validation acc: 0.7105
+18 completed epochs, 50800 batches	Avg train loss: 0.610454	Avg train acc: 0.7516	Validation loss: 0.707737	Validation acc: 0.7195
+18 completed epochs, 50900 batches	Avg train loss: 0.568118	Avg train acc: 0.7734	Validation loss: 0.713695	Validation acc: 0.7199
+18 completed epochs, 51000 batches	Avg train loss: 0.574937	Avg train acc: 0.7641	Validation loss: 0.720058	Validation acc: 0.7166
+18 completed epochs, 51100 batches	Avg train loss: 0.587805	Avg train acc: 0.7581	Validation loss: 0.712827	Validation acc: 0.7126
+18 completed epochs, 51200 batches	Avg train loss: 0.591155	Avg train acc: 0.7538	Validation loss: 0.701845	Validation acc: 0.7180
+18 completed epochs, 51300 batches	Avg train loss: 0.590562	Avg train acc: 0.7541	Validation loss: 0.718841	Validation acc: 0.7100
+18 completed epochs, 51400 batches	Avg train loss: 0.589328	Avg train acc: 0.7612	Validation loss: 0.719468	Validation acc: 0.7132
+18 completed epochs, 51500 batches	Avg train loss: 0.597152	Avg train acc: 0.7612	Validation loss: 0.713929	Validation acc: 0.7126
+18 completed epochs, 51600 batches	Avg train loss: 0.593775	Avg train acc: 0.7559	Validation loss: 0.692586	Validation acc: 0.7200
+18 completed epochs, 51700 batches	Avg train loss: 0.562443	Avg train acc: 0.7712	Validation loss: 0.707631	Validation acc: 0.7195
+18 completed epochs, 51800 batches	Avg train loss: 0.569033	Avg train acc: 0.7691	Validation loss: 0.714103	Validation acc: 0.7174
+18 completed epochs, 51900 batches	Avg train loss: 0.621747	Avg train acc: 0.7381	Validation loss: 0.709386	Validation acc: 0.7159
+18 completed epochs, 52000 batches	Avg train loss: 0.586474	Avg train acc: 0.7594	Validation loss: 0.714527	Validation acc: 0.7185
+18 completed epochs, 52100 batches	Avg train loss: 0.590283	Avg train acc: 0.7597	Validation loss: 0.721912	Validation acc: 0.7129
+18 completed epochs, 52200 batches	Avg train loss: 0.597860	Avg train acc: 0.7516	Validation loss: 0.705640	Validation acc: 0.7156
+18 completed epochs, 52300 batches	Avg train loss: 0.599310	Avg train acc: 0.7581	Validation loss: 0.706240	Validation acc: 0.7144
+18 completed epochs, 52400 batches	Avg train loss: 0.610025	Avg train acc: 0.7444	Validation loss: 0.715194	Validation acc: 0.7133
+18 completed epochs, 52500 batches	Avg train loss: 0.585603	Avg train acc: 0.7547	Validation loss: 0.712214	Validation acc: 0.7149
+18 completed epochs, 52600 batches	Avg train loss: 0.620838	Avg train acc: 0.7441	Validation loss: 0.687000	Validation acc: 0.7193
+18 completed epochs, 52700 batches	Avg train loss: 0.599691	Avg train acc: 0.7538	Validation loss: 0.690738	Validation acc: 0.7165
+18 completed epochs, 52800 batches	Avg train loss: 0.600024	Avg train acc: 0.7550	Validation loss: 0.699275	Validation acc: 0.7189
+18 completed epochs, 52900 batches	Avg train loss: 0.610344	Avg train acc: 0.7519	Validation loss: 0.692127	Validation acc: 0.7189
+18 completed epochs, 53000 batches	Avg train loss: 0.609886	Avg train acc: 0.7409	Validation loss: 0.707023	Validation acc: 0.7190
+18 completed epochs, 53100 batches	Avg train loss: 0.607644	Avg train acc: 0.7534	Validation loss: 0.693422	Validation acc: 0.7192
+18 completed epochs, 53200 batches	Avg train loss: 0.608306	Avg train acc: 0.7503	Validation loss: 0.703679	Validation acc: 0.7181
+18 completed epochs, 53300 batches	Avg train loss: 0.618395	Avg train acc: 0.7469	Validation loss: 0.691397	Validation acc: 0.7198
+18 completed epochs, 53400 batches	Avg train loss: 0.622860	Avg train acc: 0.7378	Validation loss: 0.704120	Validation acc: 0.7139
+19 completed epochs, 53500 batches	Avg train loss: 0.595078	Avg train acc: 0.7578	Validation loss: 0.723409	Validation acc: 0.7142
+19 completed epochs, 53600 batches	Avg train loss: 0.572379	Avg train acc: 0.7672	Validation loss: 0.731380	Validation acc: 0.7138
+19 completed epochs, 53700 batches	Avg train loss: 0.604430	Avg train acc: 0.7547	Validation loss: 0.703712	Validation acc: 0.7180
+19 completed epochs, 53800 batches	Avg train loss: 0.576156	Avg train acc: 0.7684	Validation loss: 0.717244	Validation acc: 0.7162
+19 completed epochs, 53900 batches	Avg train loss: 0.579820	Avg train acc: 0.7656	Validation loss: 0.703374	Validation acc: 0.7220
+19 completed epochs, 54000 batches	Avg train loss: 0.571073	Avg train acc: 0.7625	Validation loss: 0.726030	Validation acc: 0.7167
+19 completed epochs, 54100 batches	Avg train loss: 0.573325	Avg train acc: 0.7725	Validation loss: 0.709652	Validation acc: 0.7212
+19 completed epochs, 54200 batches	Avg train loss: 0.581778	Avg train acc: 0.7619	Validation loss: 0.709839	Validation acc: 0.7203
+19 completed epochs, 54300 batches	Avg train loss: 0.574673	Avg train acc: 0.7694	Validation loss: 0.707671	Validation acc: 0.7196
+19 completed epochs, 54400 batches	Avg train loss: 0.606612	Avg train acc: 0.7497	Validation loss: 0.705365	Validation acc: 0.7179
+19 completed epochs, 54500 batches	Avg train loss: 0.590023	Avg train acc: 0.7606	Validation loss: 0.703647	Validation acc: 0.7187
+19 completed epochs, 54600 batches	Avg train loss: 0.575178	Avg train acc: 0.7678	Validation loss: 0.713798	Validation acc: 0.7183
+19 completed epochs, 54700 batches	Avg train loss: 0.576664	Avg train acc: 0.7669	Validation loss: 0.709212	Validation acc: 0.7203
+19 completed epochs, 54800 batches	Avg train loss: 0.580991	Avg train acc: 0.7644	Validation loss: 0.703930	Validation acc: 0.7216
+19 completed epochs, 54900 batches	Avg train loss: 0.592290	Avg train acc: 0.7553	Validation loss: 0.699455	Validation acc: 0.7233
+19 completed epochs, 55000 batches	Avg train loss: 0.593083	Avg train acc: 0.7581	Validation loss: 0.704278	Validation acc: 0.7182
+19 completed epochs, 55100 batches	Avg train loss: 0.602557	Avg train acc: 0.7497	Validation loss: 0.703591	Validation acc: 0.7190
+19 completed epochs, 55200 batches	Avg train loss: 0.606333	Avg train acc: 0.7478	Validation loss: 0.726385	Validation acc: 0.7068
+19 completed epochs, 55300 batches	Avg train loss: 0.617926	Avg train acc: 0.7356	Validation loss: 0.688087	Validation acc: 0.7245
+19 completed epochs, 55400 batches	Avg train loss: 0.600266	Avg train acc: 0.7519	Validation loss: 0.725133	Validation acc: 0.7126
+19 completed epochs, 55500 batches	Avg train loss: 0.602431	Avg train acc: 0.7444	Validation loss: 0.699851	Validation acc: 0.7184
+19 completed epochs, 55600 batches	Avg train loss: 0.607534	Avg train acc: 0.7522	Validation loss: 0.696416	Validation acc: 0.7191
+19 completed epochs, 55700 batches	Avg train loss: 0.585829	Avg train acc: 0.7559	Validation loss: 0.696458	Validation acc: 0.7224
+19 completed epochs, 55800 batches	Avg train loss: 0.591466	Avg train acc: 0.7531	Validation loss: 0.700600	Validation acc: 0.7199
+19 completed epochs, 55900 batches	Avg train loss: 0.597933	Avg train acc: 0.7544	Validation loss: 0.711912	Validation acc: 0.7139
+19 completed epochs, 56000 batches	Avg train loss: 0.616661	Avg train acc: 0.7394	Validation loss: 0.701831	Validation acc: 0.7214
+19 completed epochs, 56100 batches	Avg train loss: 0.580042	Avg train acc: 0.7647	Validation loss: 0.711597	Validation acc: 0.7195
+19 completed epochs, 56200 batches	Avg train loss: 0.585383	Avg train acc: 0.7606	Validation loss: 0.701058	Validation acc: 0.7210
+20 completed epochs, 56300 batches	Avg train loss: 0.584092	Avg train acc: 0.7634	Validation loss: 0.707185	Validation acc: 0.7177
+20 completed epochs, 56400 batches	Avg train loss: 0.557506	Avg train acc: 0.7722	Validation loss: 0.709508	Validation acc: 0.7198
+20 completed epochs, 56500 batches	Avg train loss: 0.554113	Avg train acc: 0.7778	Validation loss: 0.736007	Validation acc: 0.7123
+20 completed epochs, 56600 batches	Avg train loss: 0.573715	Avg train acc: 0.7628	Validation loss: 0.701686	Validation acc: 0.7208
+20 completed epochs, 56700 batches	Avg train loss: 0.568912	Avg train acc: 0.7716	Validation loss: 0.714002	Validation acc: 0.7210
+20 completed epochs, 56800 batches	Avg train loss: 0.592665	Avg train acc: 0.7653	Validation loss: 0.716128	Validation acc: 0.7164
+20 completed epochs, 56900 batches	Avg train loss: 0.552757	Avg train acc: 0.7712	Validation loss: 0.726968	Validation acc: 0.7130
+20 completed epochs, 57000 batches	Avg train loss: 0.561736	Avg train acc: 0.7741	Validation loss: 0.713469	Validation acc: 0.7205
+20 completed epochs, 57100 batches	Avg train loss: 0.573616	Avg train acc: 0.7662	Validation loss: 0.708457	Validation acc: 0.7204
+20 completed epochs, 57200 batches	Avg train loss: 0.581254	Avg train acc: 0.7547	Validation loss: 0.704951	Validation acc: 0.7192
+20 completed epochs, 57300 batches	Avg train loss: 0.577574	Avg train acc: 0.7678	Validation loss: 0.708715	Validation acc: 0.7172
+20 completed epochs, 57400 batches	Avg train loss: 0.607076	Avg train acc: 0.7484	Validation loss: 0.702889	Validation acc: 0.7230
+20 completed epochs, 57500 batches	Avg train loss: 0.610024	Avg train acc: 0.7478	Validation loss: 0.699205	Validation acc: 0.7212
+20 completed epochs, 57600 batches	Avg train loss: 0.576686	Avg train acc: 0.7559	Validation loss: 0.688484	Validation acc: 0.7279	(saved model)
+20 completed epochs, 57700 batches	Avg train loss: 0.590452	Avg train acc: 0.7522	Validation loss: 0.702817	Validation acc: 0.7197
+20 completed epochs, 57800 batches	Avg train loss: 0.569449	Avg train acc: 0.7625	Validation loss: 0.700943	Validation acc: 0.7222
+20 completed epochs, 57900 batches	Avg train loss: 0.588056	Avg train acc: 0.7544	Validation loss: 0.706843	Validation acc: 0.7169
+20 completed epochs, 58000 batches	Avg train loss: 0.579025	Avg train acc: 0.7684	Validation loss: 0.703822	Validation acc: 0.7197
+20 completed epochs, 58100 batches	Avg train loss: 0.581735	Avg train acc: 0.7531	Validation loss: 0.696321	Validation acc: 0.7205
+20 completed epochs, 58200 batches	Avg train loss: 0.580695	Avg train acc: 0.7578	Validation loss: 0.710494	Validation acc: 0.7190
+20 completed epochs, 58300 batches	Avg train loss: 0.592726	Avg train acc: 0.7666	Validation loss: 0.697722	Validation acc: 0.7206
+20 completed epochs, 58400 batches	Avg train loss: 0.587201	Avg train acc: 0.7575	Validation loss: 0.704625	Validation acc: 0.7194
+20 completed epochs, 58500 batches	Avg train loss: 0.575205	Avg train acc: 0.7653	Validation loss: 0.715168	Validation acc: 0.7171
+20 completed epochs, 58600 batches	Avg train loss: 0.601395	Avg train acc: 0.7503	Validation loss: 0.712476	Validation acc: 0.7150
+20 completed epochs, 58700 batches	Avg train loss: 0.603516	Avg train acc: 0.7516	Validation loss: 0.696896	Validation acc: 0.7207
+20 completed epochs, 58800 batches	Avg train loss: 0.594405	Avg train acc: 0.7497	Validation loss: 0.711443	Validation acc: 0.7172
+20 completed epochs, 58900 batches	Avg train loss: 0.620112	Avg train acc: 0.7391	Validation loss: 0.696887	Validation acc: 0.7185
+20 completed epochs, 59000 batches	Avg train loss: 0.593735	Avg train acc: 0.7638	Validation loss: 0.697989	Validation acc: 0.7200
+21 completed epochs, 59100 batches	Avg train loss: 0.575970	Avg train acc: 0.7703	Validation loss: 0.707483	Validation acc: 0.7200
+21 completed epochs, 59200 batches	Avg train loss: 0.558778	Avg train acc: 0.7734	Validation loss: 0.718873	Validation acc: 0.7157
+21 completed epochs, 59300 batches	Avg train loss: 0.538718	Avg train acc: 0.7794	Validation loss: 0.732313	Validation acc: 0.7160
+21 completed epochs, 59400 batches	Avg train loss: 0.559424	Avg train acc: 0.7781	Validation loss: 0.727716	Validation acc: 0.7124
+21 completed epochs, 59500 batches	Avg train loss: 0.559956	Avg train acc: 0.7741	Validation loss: 0.708958	Validation acc: 0.7229
+21 completed epochs, 59600 batches	Avg train loss: 0.542020	Avg train acc: 0.7831	Validation loss: 0.714389	Validation acc: 0.7181
+21 completed epochs, 59700 batches	Avg train loss: 0.594443	Avg train acc: 0.7566	Validation loss: 0.698111	Validation acc: 0.7195
+21 completed epochs, 59800 batches	Avg train loss: 0.587314	Avg train acc: 0.7500	Validation loss: 0.728558	Validation acc: 0.7128
+21 completed epochs, 59900 batches	Avg train loss: 0.569684	Avg train acc: 0.7716	Validation loss: 0.717690	Validation acc: 0.7155
+21 completed epochs, 60000 batches	Avg train loss: 0.557578	Avg train acc: 0.7844	Validation loss: 0.711742	Validation acc: 0.7180
+21 completed epochs, 60100 batches	Avg train loss: 0.569652	Avg train acc: 0.7659	Validation loss: 0.699798	Validation acc: 0.7231
+21 completed epochs, 60200 batches	Avg train loss: 0.584490	Avg train acc: 0.7606	Validation loss: 0.705102	Validation acc: 0.7173
+21 completed epochs, 60300 batches	Avg train loss: 0.575444	Avg train acc: 0.7625	Validation loss: 0.701309	Validation acc: 0.7220
+21 completed epochs, 60400 batches	Avg train loss: 0.563586	Avg train acc: 0.7734	Validation loss: 0.713870	Validation acc: 0.7212
+21 completed epochs, 60500 batches	Avg train loss: 0.606325	Avg train acc: 0.7494	Validation loss: 0.699002	Validation acc: 0.7190
+21 completed epochs, 60600 batches	Avg train loss: 0.574138	Avg train acc: 0.7659	Validation loss: 0.710869	Validation acc: 0.7177
+21 completed epochs, 60700 batches	Avg train loss: 0.597411	Avg train acc: 0.7506	Validation loss: 0.704838	Validation acc: 0.7174
+21 completed epochs, 60800 batches	Avg train loss: 0.591492	Avg train acc: 0.7584	Validation loss: 0.722953	Validation acc: 0.7137
+21 completed epochs, 60900 batches	Avg train loss: 0.594872	Avg train acc: 0.7588	Validation loss: 0.696106	Validation acc: 0.7207
+21 completed epochs, 61000 batches	Avg train loss: 0.583913	Avg train acc: 0.7591	Validation loss: 0.707762	Validation acc: 0.7207
+21 completed epochs, 61100 batches	Avg train loss: 0.570720	Avg train acc: 0.7628	Validation loss: 0.703015	Validation acc: 0.7201
+21 completed epochs, 61200 batches	Avg train loss: 0.581877	Avg train acc: 0.7553	Validation loss: 0.713261	Validation acc: 0.7170
+21 completed epochs, 61300 batches	Avg train loss: 0.589573	Avg train acc: 0.7581	Validation loss: 0.723974	Validation acc: 0.7151
+21 completed epochs, 61400 batches	Avg train loss: 0.592439	Avg train acc: 0.7509	Validation loss: 0.705351	Validation acc: 0.7191
+21 completed epochs, 61500 batches	Avg train loss: 0.577406	Avg train acc: 0.7712	Validation loss: 0.700647	Validation acc: 0.7220
+21 completed epochs, 61600 batches	Avg train loss: 0.595585	Avg train acc: 0.7519	Validation loss: 0.714481	Validation acc: 0.7158
+21 completed epochs, 61700 batches	Avg train loss: 0.579800	Avg train acc: 0.7644	Validation loss: 0.704641	Validation acc: 0.7197
+21 completed epochs, 61800 batches	Avg train loss: 0.585988	Avg train acc: 0.7678	Validation loss: 0.701892	Validation acc: 0.7173
+22 completed epochs, 61900 batches	Avg train loss: 0.560107	Avg train acc: 0.7653	Validation loss: 0.711254	Validation acc: 0.7221
+22 completed epochs, 62000 batches	Avg train loss: 0.558788	Avg train acc: 0.7678	Validation loss: 0.717235	Validation acc: 0.7171
+22 completed epochs, 62100 batches	Avg train loss: 0.551562	Avg train acc: 0.7719	Validation loss: 0.698509	Validation acc: 0.7246
+22 completed epochs, 62200 batches	Avg train loss: 0.558946	Avg train acc: 0.7672	Validation loss: 0.727720	Validation acc: 0.7169
+22 completed epochs, 62300 batches	Avg train loss: 0.572906	Avg train acc: 0.7678	Validation loss: 0.708083	Validation acc: 0.7206
+22 completed epochs, 62400 batches	Avg train loss: 0.554266	Avg train acc: 0.7753	Validation loss: 0.709161	Validation acc: 0.7238
+22 completed epochs, 62500 batches	Avg train loss: 0.545294	Avg train acc: 0.7866	Validation loss: 0.718063	Validation acc: 0.7206
+22 completed epochs, 62600 batches	Avg train loss: 0.562538	Avg train acc: 0.7666	Validation loss: 0.723553	Validation acc: 0.7156
+22 completed epochs, 62700 batches	Avg train loss: 0.575065	Avg train acc: 0.7634	Validation loss: 0.708970	Validation acc: 0.7166
+22 completed epochs, 62800 batches	Avg train loss: 0.585812	Avg train acc: 0.7591	Validation loss: 0.714789	Validation acc: 0.7126
+22 completed epochs, 62900 batches	Avg train loss: 0.568523	Avg train acc: 0.7712	Validation loss: 0.710575	Validation acc: 0.7163
+22 completed epochs, 63000 batches	Avg train loss: 0.537857	Avg train acc: 0.7806	Validation loss: 0.715134	Validation acc: 0.7177
+22 completed epochs, 63100 batches	Avg train loss: 0.564192	Avg train acc: 0.7697	Validation loss: 0.718095	Validation acc: 0.7200
+22 completed epochs, 63200 batches	Avg train loss: 0.578718	Avg train acc: 0.7600	Validation loss: 0.719083	Validation acc: 0.7161
+22 completed epochs, 63300 batches	Avg train loss: 0.581040	Avg train acc: 0.7625	Validation loss: 0.707690	Validation acc: 0.7177
+22 completed epochs, 63400 batches	Avg train loss: 0.572186	Avg train acc: 0.7650	Validation loss: 0.706458	Validation acc: 0.7186
+22 completed epochs, 63500 batches	Avg train loss: 0.569465	Avg train acc: 0.7591	Validation loss: 0.715976	Validation acc: 0.7160
+22 completed epochs, 63600 batches	Avg train loss: 0.594460	Avg train acc: 0.7547	Validation loss: 0.710866	Validation acc: 0.7157
+22 completed epochs, 63700 batches	Avg train loss: 0.577485	Avg train acc: 0.7631	Validation loss: 0.707983	Validation acc: 0.7172
+22 completed epochs, 63800 batches	Avg train loss: 0.564085	Avg train acc: 0.7719	Validation loss: 0.705282	Validation acc: 0.7161
+22 completed epochs, 63900 batches	Avg train loss: 0.561580	Avg train acc: 0.7684	Validation loss: 0.716540	Validation acc: 0.7171
+22 completed epochs, 64000 batches	Avg train loss: 0.565037	Avg train acc: 0.7694	Validation loss: 0.715689	Validation acc: 0.7184
+22 completed epochs, 64100 batches	Avg train loss: 0.589511	Avg train acc: 0.7588	Validation loss: 0.707099	Validation acc: 0.7185
+22 completed epochs, 64200 batches	Avg train loss: 0.570579	Avg train acc: 0.7622	Validation loss: 0.698984	Validation acc: 0.7199
+22 completed epochs, 64300 batches	Avg train loss: 0.575304	Avg train acc: 0.7619	Validation loss: 0.700544	Validation acc: 0.7220
+22 completed epochs, 64400 batches	Avg train loss: 0.584723	Avg train acc: 0.7600	Validation loss: 0.708840	Validation acc: 0.7161
+22 completed epochs, 64500 batches	Avg train loss: 0.598423	Avg train acc: 0.7522	Validation loss: 0.692137	Validation acc: 0.7229
+22 completed epochs, 64600 batches	Avg train loss: 0.580776	Avg train acc: 0.7553	Validation loss: 0.698201	Validation acc: 0.7194
+23 completed epochs, 64700 batches	Avg train loss: 0.592393	Avg train acc: 0.7531	Validation loss: 0.709633	Validation acc: 0.7168
+23 completed epochs, 64800 batches	Avg train loss: 0.553437	Avg train acc: 0.7750	Validation loss: 0.704793	Validation acc: 0.7181
+23 completed epochs, 64900 batches	Avg train loss: 0.542379	Avg train acc: 0.7788	Validation loss: 0.727118	Validation acc: 0.7121
+23 completed epochs, 65000 batches	Avg train loss: 0.567042	Avg train acc: 0.7716	Validation loss: 0.717597	Validation acc: 0.7143
+23 completed epochs, 65100 batches	Avg train loss: 0.560996	Avg train acc: 0.7744	Validation loss: 0.718149	Validation acc: 0.7128
+23 completed epochs, 65200 batches	Avg train loss: 0.537692	Avg train acc: 0.7728	Validation loss: 0.720561	Validation acc: 0.7152
+23 completed epochs, 65300 batches	Avg train loss: 0.564416	Avg train acc: 0.7744	Validation loss: 0.713040	Validation acc: 0.7198
+23 completed epochs, 65400 batches	Avg train loss: 0.562884	Avg train acc: 0.7744	Validation loss: 0.717502	Validation acc: 0.7174
+23 completed epochs, 65500 batches	Avg train loss: 0.547177	Avg train acc: 0.7797	Validation loss: 0.715891	Validation acc: 0.7210
+23 completed epochs, 65600 batches	Avg train loss: 0.561601	Avg train acc: 0.7694	Validation loss: 0.725866	Validation acc: 0.7147
+23 completed epochs, 65700 batches	Avg train loss: 0.548545	Avg train acc: 0.7812	Validation loss: 0.723182	Validation acc: 0.7170
+23 completed epochs, 65800 batches	Avg train loss: 0.551635	Avg train acc: 0.7741	Validation loss: 0.712417	Validation acc: 0.7179
+23 completed epochs, 65900 batches	Avg train loss: 0.558521	Avg train acc: 0.7709	Validation loss: 0.727137	Validation acc: 0.7111
+23 completed epochs, 66000 batches	Avg train loss: 0.552881	Avg train acc: 0.7731	Validation loss: 0.708891	Validation acc: 0.7147
+23 completed epochs, 66100 batches	Avg train loss: 0.567476	Avg train acc: 0.7759	Validation loss: 0.717015	Validation acc: 0.7171
+23 completed epochs, 66200 batches	Avg train loss: 0.567933	Avg train acc: 0.7800	Validation loss: 0.701501	Validation acc: 0.7208
+23 completed epochs, 66300 batches	Avg train loss: 0.554096	Avg train acc: 0.7791	Validation loss: 0.711482	Validation acc: 0.7201
+23 completed epochs, 66400 batches	Avg train loss: 0.584578	Avg train acc: 0.7578	Validation loss: 0.709269	Validation acc: 0.7176
+23 completed epochs, 66500 batches	Avg train loss: 0.574104	Avg train acc: 0.7666	Validation loss: 0.707708	Validation acc: 0.7211
+23 completed epochs, 66600 batches	Avg train loss: 0.556832	Avg train acc: 0.7769	Validation loss: 0.712282	Validation acc: 0.7176
+23 completed epochs, 66700 batches	Avg train loss: 0.565957	Avg train acc: 0.7641	Validation loss: 0.723381	Validation acc: 0.7166
+23 completed epochs, 66800 batches	Avg train loss: 0.545659	Avg train acc: 0.7712	Validation loss: 0.728129	Validation acc: 0.7186
+23 completed epochs, 66900 batches	Avg train loss: 0.585767	Avg train acc: 0.7597	Validation loss: 0.728237	Validation acc: 0.7138
+23 completed epochs, 67000 batches	Avg train loss: 0.580035	Avg train acc: 0.7619	Validation loss: 0.717260	Validation acc: 0.7161
+23 completed epochs, 67100 batches	Avg train loss: 0.585293	Avg train acc: 0.7628	Validation loss: 0.702439	Validation acc: 0.7184
+23 completed epochs, 67200 batches	Avg train loss: 0.589756	Avg train acc: 0.7622	Validation loss: 0.711042	Validation acc: 0.7162
+23 completed epochs, 67300 batches	Avg train loss: 0.560752	Avg train acc: 0.7700	Validation loss: 0.723347	Validation acc: 0.7196
+23 completed epochs, 67400 batches	Avg train loss: 0.574281	Avg train acc: 0.7653	Validation loss: 0.715052	Validation acc: 0.7184
+23 completed epochs, 67500 batches	Avg train loss: 0.576528	Avg train acc: 0.7634	Validation loss: 0.709152	Validation acc: 0.7210
+24 completed epochs, 67600 batches	Avg train loss: 0.549912	Avg train acc: 0.7832	Validation loss: 0.728291	Validation acc: 0.7171
+24 completed epochs, 67700 batches	Avg train loss: 0.552786	Avg train acc: 0.7728	Validation loss: 0.710718	Validation acc: 0.7194
+24 completed epochs, 67800 batches	Avg train loss: 0.557797	Avg train acc: 0.7831	Validation loss: 0.718725	Validation acc: 0.7171
+24 completed epochs, 67900 batches	Avg train loss: 0.536703	Avg train acc: 0.7828	Validation loss: 0.724353	Validation acc: 0.7183
+24 completed epochs, 68000 batches	Avg train loss: 0.547866	Avg train acc: 0.7788	Validation loss: 0.732941	Validation acc: 0.7141
+24 completed epochs, 68100 batches	Avg train loss: 0.551746	Avg train acc: 0.7775	Validation loss: 0.716340	Validation acc: 0.7197
+24 completed epochs, 68200 batches	Avg train loss: 0.559664	Avg train acc: 0.7703	Validation loss: 0.732250	Validation acc: 0.7128
+24 completed epochs, 68300 batches	Avg train loss: 0.559646	Avg train acc: 0.7747	Validation loss: 0.708070	Validation acc: 0.7202
+24 completed epochs, 68400 batches	Avg train loss: 0.527015	Avg train acc: 0.7881	Validation loss: 0.720306	Validation acc: 0.7189
+24 completed epochs, 68500 batches	Avg train loss: 0.554538	Avg train acc: 0.7809	Validation loss: 0.717202	Validation acc: 0.7162
+24 completed epochs, 68600 batches	Avg train loss: 0.561399	Avg train acc: 0.7650	Validation loss: 0.714206	Validation acc: 0.7141
+24 completed epochs, 68700 batches	Avg train loss: 0.559792	Avg train acc: 0.7753	Validation loss: 0.719680	Validation acc: 0.7170
+24 completed epochs, 68800 batches	Avg train loss: 0.573270	Avg train acc: 0.7659	Validation loss: 0.737789	Validation acc: 0.7174
+24 completed epochs, 68900 batches	Avg train loss: 0.562543	Avg train acc: 0.7703	Validation loss: 0.718225	Validation acc: 0.7194
+24 completed epochs, 69000 batches	Avg train loss: 0.558726	Avg train acc: 0.7769	Validation loss: 0.724226	Validation acc: 0.7151
+24 completed epochs, 69100 batches	Avg train loss: 0.555238	Avg train acc: 0.7819	Validation loss: 0.726984	Validation acc: 0.7145
+24 completed epochs, 69200 batches	Avg train loss: 0.565896	Avg train acc: 0.7728	Validation loss: 0.720758	Validation acc: 0.7149
+24 completed epochs, 69300 batches	Avg train loss: 0.560028	Avg train acc: 0.7722	Validation loss: 0.719924	Validation acc: 0.7148
+24 completed epochs, 69400 batches	Avg train loss: 0.563937	Avg train acc: 0.7697	Validation loss: 0.714994	Validation acc: 0.7156
+24 completed epochs, 69500 batches	Avg train loss: 0.581021	Avg train acc: 0.7653	Validation loss: 0.717282	Validation acc: 0.7177
+24 completed epochs, 69600 batches	Avg train loss: 0.553099	Avg train acc: 0.7719	Validation loss: 0.727701	Validation acc: 0.7172
+24 completed epochs, 69700 batches	Avg train loss: 0.571670	Avg train acc: 0.7672	Validation loss: 0.714329	Validation acc: 0.7198
+24 completed epochs, 69800 batches	Avg train loss: 0.574149	Avg train acc: 0.7594	Validation loss: 0.726814	Validation acc: 0.7142
+24 completed epochs, 69900 batches	Avg train loss: 0.571987	Avg train acc: 0.7600	Validation loss: 0.734924	Validation acc: 0.7112
+24 completed epochs, 70000 batches	Avg train loss: 0.570486	Avg train acc: 0.7694	Validation loss: 0.737017	Validation acc: 0.7115
+24 completed epochs, 70100 batches	Avg train loss: 0.572758	Avg train acc: 0.7647	Validation loss: 0.706920	Validation acc: 0.7201
+24 completed epochs, 70200 batches	Avg train loss: 0.566501	Avg train acc: 0.7744	Validation loss: 0.713544	Validation acc: 0.7168
+24 completed epochs, 70300 batches	Avg train loss: 0.551455	Avg train acc: 0.7741	Validation loss: 0.712846	Validation acc: 0.7184

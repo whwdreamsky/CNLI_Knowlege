@@ -1,0 +1,3 @@
+#!/bin/bash
+chmod +x /home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master_back/multiffn-nli-master/src/train.py  
+CUDA_VISIBLE_DEVICES="" python2 /home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master_back/multiffn-nli-master/src/train.py --model mlp -u 300 -e 30 -aw 0 --save /home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master_back/multiffn-nli-master/model_weights/cnli_model_attend_1/ 1> /home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master_back/multiffn-nli-master/log/log_snli_0818.log 2> /home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master_back/multiffn-nli-master//log/log_cnli_0913_attend_1.txt

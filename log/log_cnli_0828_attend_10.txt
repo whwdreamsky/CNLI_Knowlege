@@ -1,0 +1,4 @@
+  File "/home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master_back/multiffn-nli-master/src/train.py", line 27
+    parser.add_argument('--validation',
+         ^
+SyntaxError: invalid syntax
