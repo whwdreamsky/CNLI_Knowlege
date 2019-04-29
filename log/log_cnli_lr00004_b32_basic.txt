@@ -1,0 +1,52 @@
+Training with following options: /home/oliver/Documents/workplace/project/DAM/src/train_cnli.py --model mlp -r 0.0004 --optim adam -e 30 -b 32 --save /home/oliver/Documents/workplace/project/DAM/model_weights/cnli_mlp_basic/
+Loading embeddings
+Embeddings have shape (41081, 300)
+2019-04-29 10:03:02.916451: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2019-04-29 10:03:02.916497: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2019-04-29 10:03:02.916506: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+Creating model
+Reading data from /home/oliver/Documents/workplace/project/data/cnli_back/blunlp/cnli_train_seg_ltp.txt
+Reading data from /home/oliver/Documents/workplace/project/data/cnli_back/blunlp/cnli_dev_seg_ltp.txt
+Reading data from /home/oliver/Documents/workplace/project/data/cnli_back/blunlp/cnli_dev_seg_ltp.txt
+Converting words to indices
+Training sentences have shape (90000, 43) (firsts) and (90000, 34) (seconds)
+Validation sentences have shape (10000, 35) (firsts) and (10000, 34) (seconds)
+Test sentences have shape (10000, 35) (firsts) and (10000, 34) (seconds)
+projection/weights:0: 90000 params
+inter-attention/layer1/dense/kernel:0: 90000 params
+inter-attention/layer1/dense/bias:0: 300 params
+inter-attention/layer2/dense/kernel:0: 90000 params
+inter-attention/layer2/dense/bias:0: 300 params
+comparison/layer1/dense/kernel:0: 360000 params
+comparison/layer1/dense/bias:0: 300 params
+comparison/layer2/dense/kernel:0: 90000 params
+comparison/layer2/dense/bias:0: 300 params
+aggregation/linear/weights:0: 900 params
+aggregation/linear/bias:0: 3 params
+aggregation/layer1/dense/kernel:0: 360000 params
+aggregation/layer1/dense/bias:0: 300 params
+aggregation/layer2/dense/kernel:0: 90000 params
+aggregation/layer2/dense/bias:0: 300 params
+Total parameters: 1172703
+Starting training
+0 completed epochs, 1000 batches	Avg train loss: 1.016973	Avg train acc: 0.4820	Validation loss: 0.925633	Validation acc: 0.5630
+0 completed epochs, 2000 batches	Avg train loss: 0.931499	Avg train acc: 0.5615	Validation loss: 0.855523	Validation acc: 0.6175	(saved model)
+1 completed epochs, 3000 batches	Avg train loss: 0.883232	Avg train acc: 0.5946	Validation loss: 0.816154	Validation acc: 0.6441	(saved model)
+1 completed epochs, 4000 batches	Avg train loss: 0.854041	Avg train acc: 0.6155	Validation loss: 0.794914	Validation acc: 0.6546	(saved model)
+1 completed epochs, 5000 batches	Avg train loss: 0.835180	Avg train acc: 0.6276	Validation loss: 0.787205	Validation acc: 0.6610	(saved model)
+2 completed epochs, 6000 batches	Avg train loss: 0.814756	Avg train acc: 0.6389	Validation loss: 0.761927	Validation acc: 0.6766	(saved model)
+2 completed epochs, 7000 batches	Avg train loss: 0.794723	Avg train acc: 0.6512	Validation loss: 0.751705	Validation acc: 0.6789	(saved model)
+2 completed epochs, 8000 batches	Avg train loss: 0.789482	Avg train acc: 0.6518	Validation loss: 0.744640	Validation acc: 0.6843	(saved model)
+3 completed epochs, 9000 batches	Avg train loss: 0.764992	Avg train acc: 0.6691	Validation loss: 0.742100	Validation acc: 0.6870	(saved model)
+3 completed epochs, 10000 batches	Avg train loss: 0.758632	Avg train acc: 0.6717	Validation loss: 0.748026	Validation acc: 0.6858
+3 completed epochs, 11000 batches	Avg train loss: 0.764755	Avg train acc: 0.6693	Validation loss: 0.736536	Validation acc: 0.6927	(saved model)
+4 completed epochs, 12000 batches	Avg train loss: 0.734737	Avg train acc: 0.6846	Validation loss: 0.738295	Validation acc: 0.6896
+4 completed epochs, 13000 batches	Avg train loss: 0.732905	Avg train acc: 0.6851	Validation loss: 0.729240	Validation acc: 0.6887
+4 completed epochs, 14000 batches	Avg train loss: 0.748394	Avg train acc: 0.6767	Validation loss: 0.737275	Validation acc: 0.6902
+5 completed epochs, 15000 batches	Avg train loss: 0.705851	Avg train acc: 0.7011	Validation loss: 0.731266	Validation acc: 0.6951	(saved model)
+5 completed epochs, 16000 batches	Avg train loss: 0.720823	Avg train acc: 0.6923	Validation loss: 0.731522	Validation acc: 0.6940
+6 completed epochs, 17000 batches	Avg train loss: 0.724787	Avg train acc: 0.6888	Validation loss: 0.725280	Validation acc: 0.6945
+6 completed epochs, 18000 batches	Avg train loss: 0.692671	Avg train acc: 0.7077	Validation loss: 0.727098	Validation acc: 0.6997	(saved model)
+6 completed epochs, 19000 batches	Avg train loss: 0.702669	Avg train acc: 0.7038	Validation loss: 0.727304	Validation acc: 0.6947
+7 completed epochs, 20000 batches	Avg train loss: 0.689276	Avg train acc: 0.7078	Validation loss: 0.724469	Validation acc: 0.6937
+7 completed epochs, 21000 batches	Avg train loss: 0.674344	Avg train acc: 0.7129	Validation loss: 0.730620	Validation acc: 0.6940

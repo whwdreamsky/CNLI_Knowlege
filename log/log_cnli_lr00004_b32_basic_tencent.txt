@@ -1,0 +1,41 @@
+Training with following options: /home/oliver/Documents/workplace/project/DAM/src/train_cnli.py --model mlp -r 0.0004 --optim adam -e 30 -b 32 --save /home/oliver/Documents/workplace/project/DAM/model_weights/cnli_mlp_tencent/
+Loading embeddings
+Embeddings have shape (43578, 200)
+/home/oliver/Documents/workplace/project/DAM/src/utils.py:389: RuntimeWarning: invalid value encountered in true_divide
+  return embeddings / norms
+2019-04-29 14:49:25.198754: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2019-04-29 14:49:25.198781: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2019-04-29 14:49:25.198790: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+Creating model
+Reading data from /home/oliver/Documents/workplace/project/data/cnli_back/blunlp/cnli_train_seg_ltp.txt
+Reading data from /home/oliver/Documents/workplace/project/data/cnli_back/blunlp/cnli_dev_seg_ltp.txt
+Reading data from /home/oliver/Documents/workplace/project/data/cnli_back/blunlp/cnli_dev_seg_ltp.txt
+Converting words to indices
+Training sentences have shape (90000, 43) (firsts) and (90000, 34) (seconds)
+Validation sentences have shape (10000, 35) (firsts) and (10000, 34) (seconds)
+Test sentences have shape (10000, 35) (firsts) and (10000, 34) (seconds)
+projection/weights:0: 60000 params
+inter-attention/layer1/dense/kernel:0: 90000 params
+inter-attention/layer1/dense/bias:0: 300 params
+inter-attention/layer2/dense/kernel:0: 90000 params
+inter-attention/layer2/dense/bias:0: 300 params
+comparison/layer1/dense/kernel:0: 360000 params
+comparison/layer1/dense/bias:0: 300 params
+comparison/layer2/dense/kernel:0: 90000 params
+comparison/layer2/dense/bias:0: 300 params
+aggregation/linear/weights:0: 900 params
+aggregation/linear/bias:0: 3 params
+aggregation/layer1/dense/kernel:0: 360000 params
+aggregation/layer1/dense/bias:0: 300 params
+aggregation/layer2/dense/kernel:0: 90000 params
+aggregation/layer2/dense/bias:0: 300 params
+Total parameters: 1142703
+Starting training
+0 completed epochs, 1000 batches	Avg train loss: nan	Avg train acc: 0.3353	Validation loss: nan	Validation acc: 0.3485
+0 completed epochs, 2000 batches	Avg train loss: nan	Avg train acc: 0.3258	Validation loss: nan	Validation acc: 0.3485
+1 completed epochs, 3000 batches	Avg train loss: nan	Avg train acc: 0.3317	Validation loss: nan	Validation acc: 0.3485
+1 completed epochs, 4000 batches	Avg train loss: nan	Avg train acc: 0.3284	Validation loss: nan	Validation acc: 0.3485
+1 completed epochs, 5000 batches	Avg train loss: nan	Avg train acc: 0.3280	Validation loss: nan	Validation acc: 0.3485
+2 completed epochs, 6000 batches	Avg train loss: nan	Avg train acc: 0.3324	Validation loss: nan	Validation acc: 0.3485
+2 completed epochs, 7000 batches	Avg train loss: nan	Avg train acc: 0.3328	Validation loss: nan	Validation acc: 0.3485
+2 completed epochs, 8000 batches	Avg train loss: nan	Avg train acc: 0.3289	Validation loss: nan	Validation acc: 0.3485

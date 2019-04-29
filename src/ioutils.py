@@ -10,6 +10,7 @@ import logging
 import numpy as np
 import nltk
 import codecs
+import pickle as  pkl
 from collections import defaultdict
 
 import utils
@@ -21,12 +22,15 @@ def write_word_dict(word_dict, dirname):
 
     It is understood that unknown words are mapped to 0.
     """
-    words = [word for word in word_dict.keys() if word_dict[word] != 0]
+    #words = [word for word in word_dict.keys() if word_dict[word] != 0]
+    words = [word for word in word_dict.keys()]
     sorted_words = sorted(words, key=lambda x: word_dict[x])
-    text = '\n'.join(sorted_words)
+    #text = '\n'.join(sorted_words)
     path = os.path.join(dirname, 'word-dict.txt')
     with open(path, 'wb') as f:
-        f.write(text.encode('utf-8'))
+        for wd in sorted_words:
+            f.write((wd+'\t'+str(word_dict[wd])+'\n').encode('utf-8'))
+        #f.write(text.encode('utf-8'))
 
 
 def read_word_dict(dirname):
@@ -40,6 +44,23 @@ def read_word_dict(dirname):
     words = text.splitlines()
     index_range = range(1, len(words) + 1)
     return defaultdict(int, zip(words, index_range))
+
+def read_word_dict_text(filename):
+    """
+    Read a file with a list of words and generate a defaultdict from it.
+    """
+    worddict = {}
+    with codecs.open(filename, 'r','utf-8') as f:
+        for line in f:
+            tmp = line.strip().split()
+            #print(tmp[0])
+            if len(tmp)==2:
+                if tmp[0] not in worddict:
+                    worddict[tmp[0]] = int(tmp[1])
+            elif len(tmp) == 1:
+                worddict[tmp[0]] = len(worddict)
+
+    return worddict
 
 
 def write_extra_embeddings(embeddings, dirname):
@@ -73,7 +94,6 @@ def load_pairs_text(filename, lowercase, language='en'):
     # we are only interested in the actual sentences + gold label
     # the corpus files has a few more things
     useful_data = []
-
     # the SNLI corpus has one JSON object per line
     with codecs.open(filename, 'r','utf-8') as f:
         tokenize = utils.get_tokenizer(language)
@@ -86,12 +106,14 @@ def load_pairs_text(filename, lowercase, language='en'):
                 continue
             tokens1 = tokenize(sent1)
             tokens2 = tokenize(sent2)
+            tokens1 = ['_BOS_'] + tokens1
+            tokens2 = ['_BOS_'] + tokens2
             useful_data.append((tokens1, tokens2, label))
     return useful_data
 
 def load_embeddings(embeddings_path, vocabulary_path=None,
-                    generate=True, load_extra_from=None,
-                    normalize=True):
+                    generate=False, load_extra_from=None,
+                    normalize=False):
     """
     Load and return an embedding model in either text format or
     numpy binary format. The text format is used if vocabulary_path
@@ -112,20 +134,25 @@ def load_embeddings(embeddings_path, vocabulary_path=None,
         'Either load or generate extra vectors'
 
     logging.debug('Loading embeddings')
-    if vocabulary_path is None:
-        wordlist, embeddings = load_text_embeddings(embeddings_path)
+    if embeddings_path is None:
+        wd = read_word_dict_text(vocabulary_path)
+        embeddings = _generate_random_vector((len(wd),300))
+    
     else:
-        wordlist, embeddings = load_binary_embeddings(embeddings_path,
-                                                      vocabulary_path)
+        if vocabulary_path is None:
+            wordlist, embeddings = load_text_embeddings(embeddings_path)
+        else:
+            wd, embeddings = load_binary_embeddings(embeddings_path,
+                                                        vocabulary_path)
 
     if generate or load_extra_from:
-        mapping = zip(wordlist, range(3, len(wordlist) + 3))
-        print("1111111111111111111111111111111111111111")
+        #mapping = zip(wordlist, range(3, len(wordlist) + 3))
+        #print("1111111111111111111111111111111111111111")
         # always map OOV words to 0
-        wd = defaultdict(int, mapping)
-        wd[utils.UNKNOWN] = 0
-        wd[utils.PADDING] = 1
-        wd[utils.GO] = 2
+        #wd = defaultdict(int, mapping)
+        #wd[utils.PADDING] = 0
+        #wd[utils.UNKNOWN] = 1
+        #wd[utils.GO] = 2
 
         if generate:
             vector_size = embeddings.shape[1]
@@ -140,8 +167,10 @@ def load_embeddings(embeddings_path, vocabulary_path=None,
         embeddings = np.append(extra, embeddings, 0)
 
     else:
-        mapping = zip(wordlist, range(0, len(wordlist)))
-        wd = defaultdict(int, mapping)
+        #mapping = zip(wordlist, range(0, len(wordlist)))
+        #wd = defaultdict(int, mapping)
+        #wd = wordlist
+        pass
 
     logging.debug('Embeddings have shape {}'.format(embeddings.shape))
     if normalize:
@@ -161,11 +190,15 @@ def load_binary_embeddings(embeddings_path, vocabulary_path):
     """
     vectors = np.load(embeddings_path)
 
-    with open(vocabulary_path, 'rb') as f:
-        text = f.read().decode('utf-8')
-    words = text.splitlines()
+    # 这里修改了文件导入的方式，这里的 worddict 使用的是
+    #with open(vocabulary_path, 'rb') as f:
+    #    text = f.read().decode('utf-8')
+    #words = text.splitlines()
+    wd = read_word_dict_text(vocabulary_path)
+    #with open(vocabulary_path,'r') as f:
+    #    wd = pkl.load(f)
 
-    return words, vectors
+    return wd, vectors
 
 def write_pairs(sentence_pairs,path):
     """
@@ -210,6 +243,16 @@ def load_text_embeddings(path):
     embeddings = np.array(vectors, dtype=np.float32)
 
     return words, embeddings
+
+def load_wordnetweight(path):
+    """
+    输出格式: word1;word2 0 0 0 0
+    :param path:
+    :return:wordnetweight_dict,feathernum
+    """
+    with open(path,'r') as f:
+        wordpairweights = pkl.load(f)
+    return wordpairweights
 
 
 def write_params(dirname, lowercase, language=None, model='mlp'):
@@ -275,6 +318,8 @@ def read_alignment(filename, lowercase):
     return sentences
 
 
+
+
 def read_corpus(filename, lowercase, language='en'):
     """
     Read a JSONL or TSV file with the SNLI corpus
@@ -289,12 +334,11 @@ def read_corpus(filename, lowercase, language='en'):
     # we are only interested in the actual sentences + gold label
     # the corpus files has a few more things
     useful_data = []
-    wordspair1 = []
-    wordspair2 = []
+    wordpairs = []
     # the SNLI corpus has one JSON object per line
     with open(filename, 'rb') as f:
         if filename.endswith('.tsv') or filename.endswith('.txt'):
-            tokenize = utils.get_tokenizer(language)
+            #tokenize = utils.get_tokenizer(language)
             for line in f:
                 line = line.decode('utf-8').strip()
                 pair1 = []
@@ -305,33 +349,34 @@ def read_corpus(filename, lowercase, language='en'):
                 if len(tmp)<3:
                     continue
                 sent1, sent2, label = tmp[:3]
+                #这里是 sent1 --> sent2 中的 wordpair
+                #这里 wordpair 是用 index 做替换的，这个index 是该词在sent 中的位置
+                #这里要对原始语料进行 tokenize
+
+                # KIM wordpair 格式
                 if len(tmp)>=4:
                     pair_item  = tmp[3].split(' ')
                     for pair in pair_item:
                         if pair.find('|')!=-1:
                             pair_split = pair.split('|')
                             if len(pair_split)==2:
-                                pair1.append((pair_split[0],pair_split[1]))
+                                pair1.append((int(pair_split[0]),int(pair_split[1])))
                 if len(tmp)>=5:
                     pair_item  = tmp[4].split(' ')
                     for pair in pair_item:
                         if pair.find('|')!=-1:
                             pair_split = pair.split('|')
                             if len(pair_split)==2:
-                                pair2.append((pair_split[0],pair_split[1]))
-                wordspair1.append(pair1)
-                wordspair2.append(pair2)
-                #for item in pair1:
-                #    print(item[0].encode('utf-8')+'\t'+item[1].encode('utf-8'))
-                #for item in pair2:
-                #    print(item[0].encode('utf-8')+'\t'+item[1].encode('utf-8'))
+                                pair2.append((int(pair_split[0]),int(pair_split[1])))
 
-
+                wordpairs.append((pair1,pair2))
                 if label == '-':
                     continue
-                tokens1 = tokenize(sent1)
-                tokens2 = tokenize(sent2)
-                useful_data.append((tokens1, tokens2, label))
+                #tokens1 = tokenize(sent1)
+                #tokens2 = tokenize(sent2)
+                tokens1 = sent1.split(' ')
+                tokens2 = sent2.split(' ')
+                useful_data.append([tokens1, tokens2, label])
         else:
             for line in f:
                 line = line.decode('utf-8')
@@ -353,5 +398,31 @@ def read_corpus(filename, lowercase, language='en'):
                 t = (tokens1, tokens2, label)
                 useful_data.append(t)
 
-    return useful_data,(wordspair1,wordspair2)
+    return useful_data,wordpairs
+
+
+
+def getWordpairDict(filename,outputfile):
+    wordpair_dict = {}
+    with open(filename, 'rb') as f:
+        for line in f:
+            line = line.decode('utf-8').strip()
+            pair1 = []
+            pair2 = []
+            tmp = line.split('\t')
+            if len(tmp)<3:
+                continue
+            sent1, sent2, label = tmp[:3]
+            #这里是 sent1 --> sent2 中的 wordpair
+            #这里 wordpair 是用 index 做替换的，这个index 是该词在sent 中的位置
+            #这里要对原始语料进行 tokeni
+            tokens1 = sent1.split(' ')
+            tokens2 = sent2.split(' ')
+            for w1 in tokens1:
+                for w2 in tokens2:
+                    wordpair_dict[w1+';'+w2] = len(wordpair_dict)
+    with open(outputfile, 'wb') as f:
+        for wd in wordpair_dict:
+            f.write((wd+'\t'+str(wordpair_dict[wd])+'\n').encode('utf-8'))
+    return wordpair_dict
 

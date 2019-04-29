@@ -9,7 +9,7 @@ import tensorflow as tf
 import numpy as np
 
 import utils
-
+import ioutils
 
 def attention_softmax3d(values):
     """
@@ -39,14 +39,7 @@ def clip_sentence(sentence, sizes):
                             tf.stack([-1, max_batch_size]))
     return clipped_sent
 
-def clip_attention_bias(attention_bias,sentence1_size,sentence2_size):
-    
-    max_len1 = tf.reduce_max(sentence1_size)
-    max_len2 = tf.reduce_max(sentence2_size)
-    
-    clipped_attend = tf.slice(attention_bias,[0,0,0],tf.stack([-1,max_len1,max_len2]))
-    
-    return clipped_attend
+
 
 
 def mask_3d(values, sentence_sizes, mask_value, dimension=2):
@@ -85,15 +78,16 @@ def mask_3d(values, sentence_sizes, mask_value, dimension=2):
 
     return masked
 
-
 class DecomposableNLIModel(object):
     """
     Base abstract class for decomposable NLI models
     """
     abc.__metaclass__ = abc.ABCMeta
 
+
+
     def __init__(self, num_units, num_classes, vocab_size, embedding_size,
-                 training=True, project_input=True, optimizer='adagrad'):
+                 training=True, project_input=True, optimizer='adagrad',maxlen1=None,maxlen2=None):
         """
         Create the model based on MLP networks.
 
@@ -108,6 +102,12 @@ class DecomposableNLIModel(object):
         self.num_units = num_units
         self.num_classes = num_classes
         self.project_input = project_input
+        self.maxlen1 = maxlen1
+        self.maxlen2 = maxlen2
+
+        self.kim = False
+
+
 
         # we have to B the vocab size to allow validate_shape on the
         # embeddings variable, which is necessary down in the graph to determine
@@ -118,7 +118,6 @@ class DecomposableNLIModel(object):
         # sentence plaholders have shape (batch, time_steps)
         self.sentence1 = tf.placeholder(tf.int32, (None, None), 'sentence1')
         self.sentence2 = tf.placeholder(tf.int32, (None, None), 'sentence2')
-        self.attention_bias = tf.placeholder(tf.float32,(None,None,None),'attention_bias')
         self.sentence1_size = tf.placeholder(tf.int32, [None], 'sent1_size')
         self.sentence2_size = tf.placeholder(tf.int32, [None], 'sent2_size')
         self.label = tf.placeholder(tf.int32, [None], 'label')
@@ -127,7 +126,6 @@ class DecomposableNLIModel(object):
         self.l2_constant = tf.placeholder(tf.float32, [], 'l2_constant')
         self.clip_value = tf.placeholder(tf.float32, [], 'clip_norm')
         self.dropout_keep = tf.placeholder(tf.float32, [], 'dropout')
-        self.attendweight = tf.placeholder(tf.float32,[],'attendweight')
         self.embedding_size = embedding_size
 
         # we initialize the embeddings from a placeholder to circumvent
@@ -140,8 +138,8 @@ class DecomposableNLIModel(object):
         clipped_sent1 = clip_sentence(self.sentence1, self.sentence1_size)
         clipped_sent2 = clip_sentence(self.sentence2, self.sentence2_size)
 
-        clipped_attend = clip_attention_bias(self.attention_bias,
-                            self.sentence1_size,self.sentence2_size)
+        # 同理在 sent1 sent2 中切片，这里根据 sentence size 切片
+
 
         embedded1 = tf.nn.embedding_lookup(self.embeddings, clipped_sent1)
         embedded2 = tf.nn.embedding_lookup(self.embeddings, clipped_sent2)
@@ -150,9 +148,10 @@ class DecomposableNLIModel(object):
 
         # the architecture has 3 main steps: soft align, compare and aggregate
         # alpha and beta have shape (batch, time_steps, embeddings)
-        self.alpha, self.beta = self.attend(repr1, repr2,clipped_attend)
-        self.v1 = self.compare(repr1, self.beta, self.sentence1_size)
-        self.v2 = self.compare(repr2, self.alpha, self.sentence2_size, True)
+        self.alpha, self.beta = self.attend(repr1, repr2)
+        # KIM C
+        self.v1 = self.compare(repr1, self.beta, self.sentence1_size,None,None)
+        self.v2 = self.compare(repr2, self.alpha, self.sentence2_size,None,None,True)
         self.logits = self.aggregate(self.v1, self.v2)
         self.answer = tf.argmax(self.logits, 1, 'answer')
 
@@ -163,12 +162,16 @@ class DecomposableNLIModel(object):
             sparse_softmax_cross_entropy_with_logits(logits=self.logits,
                                                      labels=self.label)
         self.labeled_loss = tf.reduce_mean(cross_entropy)
+        
+        # l2 正则化
         weights = [v for v in tf.trainable_variables()
                    if 'weight' in v.name]
         l2_partial_sum = sum([tf.nn.l2_loss(weight) for weight in weights])
+
         l2_loss = tf.multiply(self.l2_constant, l2_partial_sum, 'l2_loss')
         self.loss = tf.add(self.labeled_loss, l2_loss, 'loss')
-
+        self.loss_summary = tf.summary.scalar('loss', self.loss )
+        self.acc_summary = tf.summary.scalar('acc', self.accuracy)
         if training:
             self._create_training_tensors(optimizer)
 
@@ -187,6 +190,29 @@ class DecomposableNLIModel(object):
             self.representation_size = self.embedding_size
 
         return projected
+
+    def clip_attentionbias(self,attention_bias, sentence1_size, sentence2_size, num_wordnetfeather):
+        print("222222", tf.shape(attention_bias)[3])
+        max_len1 = tf.reduce_max(sentence1_size)
+        max_len2 = tf.reduce_max(sentence2_size)
+        clipped_attend = tf.slice(attention_bias, [0, 0, 0, 0],
+                                  [tf.shape(attention_bias)[0], max_len1, max_len2, num_wordnetfeather])
+        clipped_attend = tf.reshape(clipped_attend,[tf.shape(attention_bias)[0], max_len1, max_len2, num_wordnetfeather])
+        print("clip1111111:", clipped_attend.get_shape())
+
+        return clipped_attend
+
+
+    def clip_attentionbias_1(self,attention_bias, sentence1_size, sentence2_size):
+        print("222222", tf.shape(attention_bias))
+        max_len1 = tf.reduce_max(sentence1_size)
+        max_len2 = tf.reduce_max(sentence2_size)
+        clipped_attend = tf.slice(attention_bias, [0, 0, 0],
+                                  [tf.shape(attention_bias)[0], max_len1, max_len2])
+        clipped_attend = tf.reshape(clipped_attend,[tf.shape(attention_bias)[0], max_len1, max_len2])
+        print("clip1111111:", clipped_attend.get_shape())
+
+        return clipped_attend
 
     def _create_training_tensors(self, optimizer_algorithm):
         """
@@ -213,7 +239,7 @@ class DecomposableNLIModel(object):
         Project word embeddings into another dimensionality
 
         :param embeddings: embedded sentence, shape (batch, time_steps,
-            embedding_size)
+            embedding_size)ge
         :param reuse_weights: reuse weights in internal layers
         :return: projected embeddings with shape (batch, time_steps, num_units)
         """
@@ -272,6 +298,22 @@ class DecomposableNLIModel(object):
 
         return relus2
 
+
+
+    def weighted_aggregate_v(self,v,attend_matrix,attendbias_matrix,reuse=True):
+        wordnetweight = tf.matmul(tf.transpose(attendbias_matrix, [0, 1, 3, 2])
+                                  , tf.expand_dims(attend_matrix, -1), name="wordnetweight")
+        wordnetweight = tf.squeeze(wordnetweight, -1)
+        wordnetweight = tf.reduce_mean(wordnetweight,-1,keep_dims=True)
+        v_weighted = tf.squeeze(tf.matmul(tf.transpose(v,[0,2,1]),wordnetweight),-1)
+        #with tf.variable_scope("weighted_aggregate_relu"):
+        #    with tf.variable_scope('layer1'):
+        #        inputs = tf.nn.dropout(inputs, self.dropout_keep)
+        #        relus = tf.layers.dense(inputs, num_units[0], tf.nn.relu,
+        #                                kernel_initializer=initializer)
+        return v_weighted
+
+
     def _create_aggregate_input(self, v1, v2):
         """
         Create and return the input to the aggregate step.
@@ -288,9 +330,17 @@ class DecomposableNLIModel(object):
         v1_max = tf.reduce_max(v1, 1)
         v2_max = tf.reduce_max(v2, 1)
 
+        # kim weighted pooling
+
+        #v1_weighted = self.weighted_aggregate_v(v1, attend_matrix=self.inter_att1, attendbias_matrix=self.cliped_attention_bias)
+        #v2_weighted = self.weighted_aggregate_v(v2, attend_matrix=self.inter_att2, attendbias_matrix=tf.transpose(self.cliped_attention_bias, [0, 2, 1, 3]), reuse=True)
+
+
+
+        #return tf.concat(axis=1, values=[v1_sum, v2_sum, v1_max, v2_max,v1_weighted,v2_weighted])
         return tf.concat(axis=1, values=[v1_sum, v2_sum, v1_max, v2_max])
 
-    def attend(self, sent1, sent2,attend_bias):
+    def attend(self, sent1, sent2):
         """
         Compute inter-sentence attention. This is step 1 (attend) in the paper
 
@@ -305,6 +355,7 @@ class DecomposableNLIModel(object):
 
             # repr1 has shape (batch, time_steps, num_units)
             # repr2 has shape (batch, num_units, time_steps)
+            # attend projection
             repr1 = self._transformation_attend(sent1, num_units,
                                                 self.sentence1_size)
             repr2 = self._transformation_attend(sent2, num_units,
@@ -316,9 +367,19 @@ class DecomposableNLIModel(object):
             self.raw_attentions = tf.matmul(repr1, repr2)
 
             # add attention bias
-            self.raw_attentions = tf.add(self.raw_attentions,tf.multiply
-                                   (attend_bias,self.attendweight))
+            # KIM
+            #self.raw_attentions = tf.add(tf.multiply(tf.reduce_mean(self.cliped_attention_bias,axis=-1),self.attendweight),self.raw_attentions)
 
+
+
+            if self.kim:
+                #self.raw_attentions = tf.add(tf.multiply(self.cliped_attention_bias_1,self.attendweight),self.raw_attentions)
+
+                self.raw_attentions = tf.reduce_mean(tf.multiply(self.cliped_attention_bias,self.attendweight,name="erro_matal"),axis=-1) + self.raw_attentions
+                #self.raw_attentions = tf.add(self.raw_attentions,tf.multiply
+                #                       (attend_bias,self.attendweight))
+                print("cliped attentions,",self.cliped_attention_bias.get_shape())
+            print("raw_attentions,",self.raw_attentions.get_shape())
             # now get the attention softmaxes
             masked = mask_3d(self.raw_attentions, self.sentence2_size, -np.inf)
             att_sent1 = attention_softmax3d(masked)
@@ -334,7 +395,7 @@ class DecomposableNLIModel(object):
 
         return alpha, beta
 
-    def compare(self, sentence, soft_alignment, sentence_length,
+    def compare(self, sentence, soft_alignment, sentence_length,attend_matrix=None,attendbias_matrix=None,
                 reuse_weights=False):
         """
         Apply a feed forward network to compare one sentence to its
@@ -353,8 +414,8 @@ class DecomposableNLIModel(object):
             # sent_and_alignment has shape (batch, time_steps, num_units)
             inputs = [sentence, soft_alignment, sentence - soft_alignment,
                       sentence * soft_alignment]
+            # KIM
             sent_and_alignment = tf.concat(axis=2, values=inputs)
-
             output = self._transformation_compare(
                 sent_and_alignment, num_units, sentence_length, reuse_weights)
 
@@ -412,7 +473,8 @@ class DecomposableNLIModel(object):
         """
         return cls(params['num_units'], params['num_classes'],
                    params['vocab_size'], params['embedding_size'],
-                   project_input=params['project_input'], training=training)
+                   project_input=params['project_input'], training=training,kim=True)
+
 
     @classmethod
     def load(cls, dirname, session, training=False):
@@ -430,6 +492,7 @@ class DecomposableNLIModel(object):
 
         tensorflow_file = os.path.join(dirname, 'model')
         saver = tf.train.Saver(tf.trainable_variables())
+        #saver = tf.train.Saver()
         saver.restore(session, tensorflow_file)
 
         # if training, optimizer values still have to be initialized
@@ -458,6 +521,8 @@ class DecomposableNLIModel(object):
         """
         Persist a model's information
         """
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
         params = self._get_params_to_save()
         tensorflow_file = os.path.join(dirname, 'model')
         params_file = os.path.join(dirname, 'model-params.json')
@@ -467,14 +532,26 @@ class DecomposableNLIModel(object):
 
         saver.save(session, tensorflow_file)
 
+    def exactWordnetFeature(self,model,graph,batch_data):
+        feature = []
+        feature =  wordnetEmbeddingAPI(model,graph,batch_data)
+        # for i in range(len(batch_data.sentences1)):
+        #     feature_item = wordnetEmbeddingAPI(model,graph,batch_data,index = i)
+        #     #for sent1,sent2,sent1_size,sent2_size,sent1_chars,sent2_chars in zip(batch_sent1,batch_sent2,batch_sent1size,batch_sent2size,batch_sent1chars,batch_sent2chars):
+        #     #feature_item = wordnetEmbeddingAPI(model,graph,sent1,sent2,sent1_size,sent2_size,sent1_chars,sent2_chars)
+
+        return feature
+
     def _create_batch_feed(self, batch_data, learning_rate, dropout_keep,
-                           l2, clip_value,attendweight):
+                           l2, clip_value):
         """
         Create a feed dictionary to be given to the tensorflow session.
         """
+        #padding_attentionbias = np.zeros([batch_data.sentences1.shape[0],batch_data.sentences1.shape[1],batch_data.sentences2.shape[1],self.num_wordnetfeather],dtype=float)
+        #if batch_data.sentences1_lemma is not None and batch_data.sentences2_lemma is not None:
+
         feeds = {self.sentence1: batch_data.sentences1,
                  self.sentence2: batch_data.sentences2,
-                 self.attention_bias: batch_data.attention_bias,
                  self.sentence1_size: batch_data.sizes1,
                  self.sentence2_size: batch_data.sizes2,
                  self.label: batch_data.labels,
@@ -482,7 +559,6 @@ class DecomposableNLIModel(object):
                  self.dropout_keep: dropout_keep,
                  self.l2_constant: l2,
                  self.clip_value: clip_value,
-                 self.attendweight: attendweight
                  }
         return feeds
 
@@ -494,10 +570,39 @@ class DecomposableNLIModel(object):
         """
         loss, acc = session.run([self.loss, self.accuracy], feeds)
         return loss, acc
+
+    def predict_testset_on_batch(self,session,dataset,filterwriter=None,batch_size=128,l2=0,epoch = 1,dev_step=0):
+        """
+
+        :rtype: object
+        """
+        batch_index = 0
+        accumulated_loss =0.0
+        accumulated_num_items =0
+        accumulated_accuracy = 0.0
+        while batch_index < dataset.num_items:
+            batch_index2 = batch_index + batch_size
+            batch = dataset.get_batch(batch_index, batch_index2)
+            feeds = self._create_batch_feed(batch, 0,
+                                            1, l2, 0)
+
+            ops = [self.loss, self.accuracy,self.acc_summary,self.loss_summary]
+            loss, accuracy,acc_summary_str,loss_summary_str = session.run(ops, feed_dict=feeds)
+            accumulated_loss += loss * batch.num_items
+            accumulated_accuracy += accuracy * batch.num_items
+            accumulated_num_items += batch.num_items
+            dev_step += 1
+            if filterwriter is not None:
+                filterwriter.add_summary(acc_summary_str,dev_step)
+                filterwriter.add_summary(loss_summary_str, dev_step)
+            batch_index = batch_index2
+           
+        return accumulated_loss / accumulated_num_items,accumulated_accuracy / accumulated_num_items,dev_step
+
     
-    def train(self, session, train_dataset, valid_dataset, save_dir,
+    def train(self, session, train_dataset, valid_dataset,test_dataset,save_dir,
               learning_rate, num_epochs, batch_size, dropout_keep=1, l2=0,
-              clip_norm=10, report_interval=1000,attendweight=1):
+              clip_norm=10, report_interval=10000):
         """
         Train the model
 
@@ -527,8 +632,18 @@ class DecomposableNLIModel(object):
         # batch counter doesn't reset after each epoch
         batch_counter = 0
 
-        saver = tf.train.Saver(tf.trainable_variables(), max_to_keep=1)
+        base_acc = 0.6
+        earlystop = earlystop_change = 5
+        lr_max_change = 3
+        lr_change = 3
+        history_acc = []
 
+        dev_counter = 0
+        train_file_writer = tf.summary.FileWriter(save_dir + '/train', tf.get_default_graph())
+        test_file_writer = tf.summary.FileWriter(save_dir + '/test', tf.get_default_graph())
+        saver = tf.train.Saver(tf.trainable_variables(), max_to_keep=1)
+        
+        print("num_epoches:",num_epochs)
         for i in range(num_epochs):
             train_dataset.shuffle_data()
             batch_index = 0
@@ -537,16 +652,17 @@ class DecomposableNLIModel(object):
                 batch_index2 = batch_index + batch_size
                 batch = train_dataset.get_batch(batch_index, batch_index2)
                 feeds = self._create_batch_feed(batch, learning_rate,
-                                                dropout_keep, l2, clip_norm,attendweight)
+                                                dropout_keep, l2, clip_norm)
 
-                ops = [self.train_op, self.loss, self.accuracy]
-                _, loss, accuracy = session.run(ops, feed_dict=feeds)
+                ops = [self.train_op, self.loss, self.accuracy,self.loss_summary,self.acc_summary]
+                _, loss, accuracy,loss_summary_str,acc_summary_str = session.run(ops, feed_dict=feeds)
                 accumulated_loss += loss * batch.num_items
                 accumulated_accuracy += accuracy * batch.num_items
                 accumulated_num_items += batch.num_items
-
                 batch_index = batch_index2
                 batch_counter += 1
+                train_file_writer.add_summary(loss_summary_str,batch_counter)
+                train_file_writer.add_summary(acc_summary_str,batch_counter)
 
                 if batch_counter % report_interval == 0:
                     avg_loss = accumulated_loss / accumulated_num_items
@@ -554,29 +670,46 @@ class DecomposableNLIModel(object):
                     accumulated_loss = 0
                     accumulated_accuracy = 0
                     accumulated_num_items = 0
+                    #feeds = self._create_batch_feed(valid_dataset,
+                            #                                0, 1, l2, 0,attendweight)
 
-                    feeds = self._create_batch_feed(valid_dataset,
-                                                    0, 1, l2, 0,attendweight)
-
-                    valid_loss, valid_acc = self._run_on_validation(session,
-                                                                    feeds)
+                    #valid_loss, valid_acc = self._run_on_validation(session,feeds)
+                    valid_loss,valid_acc,dev_counter = self.predict_testset_on_batch(session,valid_dataset,filterwriter=test_file_writer,epoch=i,dev_step=dev_counter)
+                    #test_loss,test_acc = self.predict_testset_on_batch(session,test_dataset)
 
                     msg = '%d completed epochs, %d batches' % (i, batch_counter)
                     msg += '\tAvg train loss: %f' % avg_loss
                     msg += '\tAvg train acc: %.4f' % avg_accuracy
                     msg += '\tValidation loss: %f' % valid_loss
                     msg += '\tValidation acc: %.4f' % valid_acc
+                    #msg += '\ttest loss: %f' % test_loss
+                    #msg += '\ttest acc: %.4f' % test_acc
 
                     if valid_acc > best_acc:
                         best_acc = valid_acc
-                        if not os.path.exists(save_dir):
-                            os.makedirs(save_dir)
-                        self.save(save_dir, session, saver)
-                        msg += '\t(saved model)'
+                        if valid_acc>base_acc:
+                            self.save(save_dir, session, saver)
+                            msg += '\t(saved model)'
 
                     logger.info(msg)
+            valid_loss,valid_acc,dev_counter = self.predict_testset_on_batch(session,valid_dataset,filterwriter=test_file_writer,epoch=i,dev_step=dev_counter)
+            history_acc.append(valid_acc)
+            if valid_acc < max(history_acc):
+                lr_change -=1
+                earlystop_change -=1
+            else:
+                lr_change = lr_max_change
+                earlystop_change = earlystop
+            if lr_change <=0:
+                learning_rate = learning_rate * 0.5
+                logger.info("learning rate half  %f !!!" %(learning_rate))
+                lr_change = lr_max_change
+            if earlystop_change < 0:
+                print("Early Stop !!!!, best acc %f" %(max(history_acc)))
+                break
+ 
 
-    def evaluate(self, session, dataset, return_answers, batch_size=5000):
+    def evaluate(self, session, dataset, return_answers, batch_size=128):
         """
         Run the model on the given dataset
 
@@ -597,7 +730,7 @@ class DecomposableNLIModel(object):
         ops = [self.loss, self.accuracy, self.answer,self.logits]
         i = 0
         j = batch_size
-        attendweight = 1
+        attendweight = 10
         # store accuracies and losses weighted by the number of items in the
         # batch to take the correct average in the end
         weighted_accuracies = []
@@ -612,13 +745,13 @@ class DecomposableNLIModel(object):
             i = j
             j += batch_size
 
-            feeds = self._create_batch_feed(subset, 0, 1, 0, 0,attendweight)
+            feeds = self._create_batch_feed(subset, 0, 1, 0, 0)
             results = session.run(ops, feeds)
             weighted_losses.append(results[0] * subset.num_items)
             weighted_accuracies.append(results[1] * subset.num_items)
             #print(results[3])
-	    #print(type(results[3]))
-	    if return_answers:
+        #print(type(results[3]))
+            if return_answers:
                 answers.append(results[2])
                 logits.append(results[3])
 

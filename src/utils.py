@@ -14,72 +14,19 @@ import numpy as np
 import tensorflow as tf
 from collections import Counter
 from nltk.tokenize.regexp import RegexpTokenizer
-
+from RTEDataset import RTEDataset
 import classifiers
 
 tokenizer = nltk.tokenize.TreebankWordTokenizer()
 UNKNOWN = '_UNK_'
 PADDING = '_PAD_'
-GO = '__GO__'  # it's called "GO" but actually serves as a null alignment
+GO = '_EOS_'  # it's called "GO" but actually serves as a null alignment
+
+
 #UNKNOWN = u'_UNK'
 #PADDING = u'_PAD'
 #GO = u'_GO'  # it's called "GO" but actually serves as a null alignment
 NOMATCH = -1
-
-class RTEDataset(object):
-    """
-    Class for better organizing a data set. It provides a separation between
-       first and second sentences and also their sizes.
-    """
-
-    def __init__(self, sentences1, sentences2, sizes1, sizes2, labels,attention_bias):
-        """
-        :param sentences1: A 2D numpy array with sentences (the first in each
-            pair) composed of token indices
-        :param sentences2: Same as above for the second sentence in each pair
-        :param sizes1: A 1D numpy array with the size of each sentence in the
-            first group. Sentences should be filled with the PADDING token after
-            that point
-        :param sizes2: Same as above
-        :param labels: 1D numpy array with labels as integers
-        """
-        self.sentences1 = sentences1
-        self.sentences2 = sentences2
-        self.sizes1 = sizes1
-        self.sizes2 = sizes2
-        self.labels = labels
-        self.num_items = len(sentences1)
-        self.attention_bias = attention_bias
-
-    def shuffle_data(self):
-        """
-        Shuffle all data using the same random sequence.
-        :return:
-        """
-        shuffle_arrays(self.sentences1, self.sentences2,
-                       self.sizes1, self.sizes2, self.labels,self.attention_bias)
-
-    def get_batch(self, from_, to):
-        """
-        Return an RTEDataset object with the subset of the data contained in
-        the given interval. Note that the actual number of items may be less
-        than (`to` - `from_`) if there are not enough of them.
-
-        :param from_: which position to start from
-        :param to: which position to end
-        :return: an RTEDataset object
-        """
-        if from_ == 0 and to >= self.num_items:
-            return self
-
-        subset = RTEDataset(self.sentences1[from_:to],
-                            self.sentences2[from_:to],
-                            self.sizes1[from_:to],
-                            self.sizes2[from_:to],
-                            self.labels[from_:to],self.attention_bias[from_:to])
-        return subset
-
-
 def get_tokenizer(language):
     """
     Return the tokenizer function according to the language.
@@ -203,16 +150,6 @@ def get_logger(name='logger'):
     return logger
 
 
-def shuffle_arrays(*arrays):
-    """
-    Shuffle all given arrays with the same RNG state.
-
-    All shuffling is in-place, i.e., this function returns None.
-    """
-    rng_state = np.random.get_state()
-    for array in arrays:
-        np.random.shuffle(array)
-        np.random.set_state(rng_state)
 
 
 def get_model_class(params):
@@ -250,6 +187,7 @@ def convert_labels(pairs, label_map):
     :param label_map: dictionary mapping label strings to numbers
     :return: a numpy array
     """
+    print(label_map)
     return np.array([label_map[pair[2]] for pair in pairs], dtype=np.int32)
 
 def _pad_wordpair_to_indices(paded_sent1,paded_sent2,wordspair,
@@ -302,6 +240,19 @@ def _produce_attention_bias(sent1_wordpair,sent2_wordpair,max_len1,max_len2):
 
 
 
+def getchar_seq(tokens,sizes,maxlen_char,chardict):
+    # 因为这里 要经过一个 PADDing 的操作，所以实际上 size 的长度是大于token 的
+    charseqs = []
+    for size,token in zip(sizes,tokens):
+        charseq = []
+        for i in range(size):
+            if i>= len(token):
+                charseq.append(getCharSequence(UNKNOWN,chardict,maxlen_char))
+            else:
+                charseq.append(getCharSequence(token[i],chardict,maxlen_char))
+        charseqs.append(charseq)
+    return charseqs
+
 def create_dataset(pairs,wordpairs,word_dict, label_dict=None,
                    max_len1=None, max_len2=None):
     """
@@ -319,25 +270,17 @@ def create_dataset(pairs,wordpairs,word_dict, label_dict=None,
     """
     tokens1 = [pair[0] for pair in pairs]
     tokens2 = [pair[1] for pair in pairs]
+
     sentences1, sizes1 = _convert_pairs_to_indices(tokens1, word_dict,
                                                    max_len1)
     sentences2, sizes2 = _convert_pairs_to_indices(tokens2, word_dict,
                                                    max_len2)
-    sent1_wordpair = _pad_wordpair_to_indices(sentences1,sentences2,wordpairs[0],
-                                word_dict,max_len=sizes1.max(),flag='first')
-
-    sent2_wordpair = _pad_wordpair_to_indices(sentences1,sentences2,wordpairs[1],
-                                word_dict,max_len=sizes2.max(),flag='second')
-
-    attention_bias = _produce_attention_bias(sent1_wordpair,sent2_wordpair,sizes1.max(),sizes2.max())
-    print(attention_bias.shape)
-    
     if label_dict is not None:
         labels = convert_labels(pairs, label_dict)
     else:
         labels = None
 
-    return RTEDataset(sentences1, sentences2, sizes1, sizes2, labels,attention_bias)
+    return RTEDataset(sentences1, sentences2, sizes1, sizes2, labels)
 
 
 def _convert_pairs_to_indices(sentences, word_dict, max_len=None,
@@ -358,10 +301,11 @@ def _convert_pairs_to_indices(sentences, word_dict, max_len=None,
         a 1-d array with their sizes
     """
     sizes = np.array([len(sent) for sent in sentences])
+    # 注意这里的maxlen 要保证比之前大1
     if use_null:
         sizes += 1
-        if max_len is not None:
-            max_len += 1
+    #    if max_len is not None:
+    #        max_len += 1
 
     if max_len is None:
         max_len = sizes.max()
@@ -371,10 +315,15 @@ def _convert_pairs_to_indices(sentences, word_dict, max_len=None,
     array = np.full(shape, word_dict[PADDING], dtype=np.int32)
 
     for i, sent in enumerate(sentences):
-        indices = [word_dict[token] for token in sent]
-
+        indices = []
+        for token in sent:
+            if token in word_dict:
+                indices.append(word_dict[token])
+            else:
+                indices.append(word_dict[UNKNOWN])
+        #indices = [word_dict[token] for token in sent if token in word_dict]
         if use_null:
-            indices = [word_dict[GO]] + indices
+            indices = indices + [word_dict[GO]]
 
         array[i, :len(indices)] = indices
 
@@ -438,3 +387,49 @@ def normalize_embeddings(embeddings):
     # normalize embeddings
     norms = np.linalg.norm(embeddings, axis=1).reshape((-1, 1))
     return embeddings / norms
+
+
+def padding_attentionbias(attentionbias,sent1,sent2,wordpairweightdict,feathernum):
+
+    padded_attentionbias = np.zeros([len(attentionbias),sent1.shape[1],sent2.shape[1],feathernum],dtype=float)
+    attention_bias_attend = np.zeros([len(attentionbias),sent1.shape[1],sent2.shape[1]],dtype=float)
+    for id,wordpair in enumerate(attentionbias):
+        #print(len(wordpair))
+        wordpair1 = wordpair[0]
+        wordpair2 = wordpair[1]
+        # 因为可能存在的不对称性，我们分开写，例如 w1 w2 存在，但是 w2 w1 不存在
+        for wordindex in wordpair1:
+            w1 = sent1[id][wordindex[0]]
+            w2 = sent2[id][wordindex[1]]
+            # print("index 1 %d , index 2 %d" %(wordindex[0],wordindex[1]))
+            # print("word 1 %d , word 2 %d" %(w1,w2))
+            padded_attentionbias[id][wordindex[0]][wordindex[1]] = wordpairweightdict[w1][w2]
+            attention_bias_attend[id][wordindex[0]][wordindex[1]] = 1
+            #if w1 in wordpairweightdict:
+            #    if w2 in wordpairweightdict[w1]:
+            #        #print(w1, w2)
+            #        padded_attentionbias[id][wordindex[0]][wordindex[1]] = wordpairweightdict[w1][w2]
+        for wordindex in wordpair2:
+            w1 = sent1[id][wordindex[0]]
+            w2 = sent2[id][wordindex[1]]
+            # print("index 1 %d , index 2 %d" % (wordindex[0], wordindex[1]))
+            # print("word 1 %d , word 2 %d" % (w1, w2))
+            padded_attentionbias[id][wordindex[0]][wordindex[1]] = wordpairweightdict[w2][w1]
+            attention_bias_attend[id][wordindex[0]][wordindex[1]] = 1
+            #if w2 in wordpairweightdict:
+            #    if w1 in wordpairweightdict[w2]:
+            #        #print(w2, w1)
+            #        padded_attentionbias[id][wordindex[0]][wordindex[1]] = wordpairweightdict[w2][w1]
+    return padded_attentionbias,attention_bias_attend
+
+
+
+
+def getCrossMatrix(sent1,sent2):
+    cross_matrix = []
+    for w1 in sent1:
+        row_m = []
+        for w2 in sent2:
+            row_m.append(w1+';'+w2)
+        cross_matrix.append(row_m)
+    return cross_matrix

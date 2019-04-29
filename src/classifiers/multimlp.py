@@ -17,11 +17,13 @@ class MultiFeedForwardClassifier(DecomposableNLIModel):
     without any recurrent structure.
     """
     def __init__(self, num_units, num_classes, vocab_size, embedding_size,
-                 training=True, project_input=True, optimizer='adagrad',
-                 use_intra_attention=False, distance_biases=10):
+                 training=True, project_input=True, optimizer='adagrad', use_intra_attention=False, distance_biases=10,
+                 maxlen1=None, maxlen2=None,attendweight = 0.0,kim=False):
         """
         Create the model based on MLP networks.
 
+        :param maxlen1:
+        :param maxlen2:
         :param num_units: size of the networks
         :param num_classes: number of classes in the problem
         :param vocab_size: size of the vocabulary
@@ -38,7 +40,7 @@ class MultiFeedForwardClassifier(DecomposableNLIModel):
 
         super(MultiFeedForwardClassifier, self).\
             __init__(num_units, num_classes, vocab_size, embedding_size,
-                     training, project_input, optimizer)
+                     training, project_input, optimizer,maxlen1=maxlen1,maxlen2=maxlen2)
 
     def _transformation_input(self, inputs, reuse_weights=False):
         """
@@ -64,13 +66,15 @@ class MultiFeedForwardClassifier(DecomposableNLIModel):
         params['distance_biases'] = self.distance_biases
         return params
 
+
+
     @classmethod
     def _init_from_load(cls, params, training):
         return cls(params['num_units'], params['num_classes'],
                    params['vocab_size'], params['embedding_size'],
                    project_input=params['project_input'], training=training,
                    use_intra_attention=params['use_intra'],
-                   distance_biases=params['distance_biases'])
+                   distance_biases=params['distance_biases'],maxlen1=None,maxlen2=None)
 
     def _get_distance_biases(self, time_steps, reuse_weights=False):
         """

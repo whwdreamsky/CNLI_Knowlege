@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/data1/hwwang/workplace/textentailment/multiffn-nli-master/src/train.py", line 11, in <module>
-    import tensorflow as tf
-ImportError: No module named tensorflow

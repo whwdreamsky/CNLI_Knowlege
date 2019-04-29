@@ -8,6 +8,7 @@ import tensorflow as tf
 import numpy as np
 import utils
 import ioutils
+import os
 
 """
 Evaluate the performance of an NLI model on a dataset
@@ -31,14 +32,25 @@ def print_errors(pairs, answers, label_dict):
 
 
 if __name__ == '__main__':
-    data_base = '/home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master_back/multiffn-nli-master/'
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    os.environ["CUDA_VISIBLE_DEVICES"] = ""
+    # data_base = "/home/hwwang/workplace/deeplearning/textentailment/data/kim_wordnet_data/"
+    # data_base1 = "/home/hwwang/workplace/project/nli/data/word_sequence/"
+    # root_base = "/home/hwwang/workplace/project/DAM/"
+    #data_base = "/home/oliver/Documents/workplace/project/data/breaknli/"
+    #data_base1 = "/home/oliver/Documents/workplace/project/data/snli/snli/"
+    data_base = "/home/oliver/Documents/workplace/project/data/cnli_back/"
+    root_base = "/home/oliver/Documents/workplace/project/DAM/"
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--model', help='Directory with saved model',default=data_base+'/model_weights/cnli_model_attend_1/')
+    parser.add_argument('--model', help='Directory with saved model',default=root_base+'/model_weights/cnli_mlp_basic/')
     parser.add_argument('--dataset',
-                        help='JSONL or TSV file with data to evaluate on',default=data_base+'/cnli/cnli_test_seg.txt')
-    parser.add_argument('--embeddings', help='Numpy embeddings file',default=data_base+'cnli_sgns_2.npy')
+                        help='JSONL or TSV file with data to evaluate on',default=data_base+'cnli_dev_seg_ltp.txt')
+    parser.add_argument('--dataset_lemma',
+                        help='JSONL or TSV file with data to evaluate on', default=data_base + 'cnli_dev_seg_ltp.txt')
+    parser.add_argument('--embeddings', help='Numpy embeddings file',default=data_base+'cnli.npy')
+
     parser.add_argument('--vocabulary',
-                        help='Text file with embeddings vocabulary',default=data_base+'/cnli/vocab.txt')
+                        help='Text file with embeddings vocabulary',default=data_base+'worddict.txt')
     parser.add_argument('-v',
                         help='Verbose', action='store_true', dest='verbose')
     parser.add_argument('-e',
@@ -48,27 +60,33 @@ if __name__ == '__main__':
 
     utils.config_logger(verbose=args.verbose)
     params = ioutils.load_params(args.model)
-    sess = tf.InteractiveSession()
+    sess = tf.Session()
 
     model_class = utils.get_model_class(params)
     model = model_class.load(args.model, sess)
+
+    # word_dict, embeddings = ioutils.load_embeddings(args.embeddings,
+    #                                                args.vocabulary,
+    #                                                generate=False,
+    #                                                load_extra_from=args.model,
+    #                                                normalize=True)
     word_dict, embeddings = ioutils.load_embeddings(args.embeddings,
                                                     args.vocabulary,
                                                     generate=False,
-                                                    load_extra_from=args.model,
-                                                    normalize=True)
-    if utils.PADDING in word_dict:
-        print("IN !!!!!!!!!!!!!!")
-    else:
-        print("NO !!!!!!!!!!!!!")
+                                                    load_extra_from=None,
+                                                    normalize=True  )
+
     model.initialize_embeddings(sess, embeddings)
     label_dict = ioutils.load_label_dict(args.model)
 
-    pairs,wordpairs = ioutils.read_corpus(args.dataset, params['lowercase'],
+    pairs,wordpairs = ioutils.read_corpus(args.dataset, True,
                                 params['language'])
     dataset = utils.create_dataset(pairs,wordpairs,word_dict, label_dict)
-    loss, acc, answers,logits = model.evaluate(sess, dataset, True)
 
+    print("Test Dataset Size :%d" ,dataset.num_items)
+    loss, acc, answers,logits = model.evaluate(sess, dataset, True,batch_size=64)
+    print(answers)
+    print(np.array(logits).shape)
     label_dict_inverse = {}
     for key,value in label_dict.items():
         label_dict_inverse[value] = key
@@ -78,10 +96,10 @@ if __name__ == '__main__':
         fout.write('\n')
     fout.close()
         #print(label_dict_inverse[ans])
-    print(logits)
+    #print(logits)
     #logits = np.array(logits)
-    print(logits.shape)
-    np.savetxt("./logits.txt",logits)
+    #print(logits.shape)
+    #np.savetxt("./logits.txt",logits)
     #for item in logits:
     #    print(item)
     print('Loss: %f' % loss)
