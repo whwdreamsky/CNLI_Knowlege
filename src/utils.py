@@ -16,7 +16,7 @@ from collections import Counter
 from nltk.tokenize.regexp import RegexpTokenizer
 from RTEDataset import RTEDataset
 import classifiers
-
+from CNLIDataset import CNLIDataset
 tokenizer = nltk.tokenize.TreebankWordTokenizer()
 UNKNOWN = '_UNK_'
 PADDING = '_PAD_'
@@ -247,14 +247,37 @@ def getchar_seq(tokens,sizes,maxlen_char,chardict):
         charseq = []
         for i in range(size):
             if i>= len(token):
-                charseq.append(getCharSequence(UNKNOWN,chardict,maxlen_char))
+                charseq.append(getCharSequence("",chardict,maxlen_char))
             else:
                 charseq.append(getCharSequence(token[i],chardict,maxlen_char))
         charseqs.append(charseq)
     return charseqs
 
+def getCharSequence(word,chardict,maxlen_char=10):
+    sequence = np.full([maxlen_char],chardict['_PAD_CHAR_'])
+    for i,c in enumerate(word):
+        if i>= maxlen_char:
+            break
+        if c in chardict:
+            sequence[i] = chardict[c]
+        else:
+            sequence[i] = chardict["_UNK_CHAR_"]
+    return sequence.tolist()
+def getchar_seq(tokenlist,maxlen_word,maxlen_char,chardict):
+    # 因为这里 要经过一个 PADDing 的操作，所以实际上 size 的长度是大于token 的
+    charseqs = []
+    for tokens in tokenlist:
+        charseq = []
+        for i in range(maxlen_word):
+            if i>= len(tokens):
+                charseq.append(getCharSequence("",chardict,maxlen_char))
+            else:
+                charseq.append(getCharSequence(tokens[i],chardict,maxlen_char))
+        charseqs.append(charseq)
+    return charseqs
+
 def create_dataset(pairs,wordpairs,word_dict, label_dict=None,
-                   max_len1=None, max_len2=None):
+                   max_len1=None, max_len2=None,maxlen_char=6):
     """
     Generate and return a RTEDataset object for storing the data in numpy format.
 
@@ -271,16 +294,18 @@ def create_dataset(pairs,wordpairs,word_dict, label_dict=None,
     tokens1 = [pair[0] for pair in pairs]
     tokens2 = [pair[1] for pair in pairs]
 
-    sentences1, sizes1 = _convert_pairs_to_indices(tokens1, word_dict,
+    sentences1, sizes1,max_len1 = _convert_pairs_to_indices(tokens1, word_dict,
                                                    max_len1)
-    sentences2, sizes2 = _convert_pairs_to_indices(tokens2, word_dict,
+    sentences2, sizes2,max_len2 = _convert_pairs_to_indices(tokens2, word_dict,
                                                    max_len2)
     if label_dict is not None:
         labels = convert_labels(pairs, label_dict)
     else:
         labels = None
+    sent1_charseq = getchar_seq(tokens1,max_len1,maxlen_char=maxlen_char,chardict=word_dict)
+    sent2_charseq = getchar_seq(tokens2,max_len2,maxlen_char=maxlen_char,chardict=word_dict)
 
-    return RTEDataset(sentences1, sentences2, sizes1, sizes2, labels)
+    return CNLIDataset(sentences1, sentences2, sizes1, sizes2, labels,sent1_charseq,sent2_charseq),max_len1,max_len2
 
 
 def _convert_pairs_to_indices(sentences, word_dict, max_len=None,
@@ -324,11 +349,13 @@ def _convert_pairs_to_indices(sentences, word_dict, max_len=None,
         #indices = [word_dict[token] for token in sent if token in word_dict]
         if use_null:
             indices = indices + [word_dict[GO]]
+        if len(indices) > max_len:
+            array[i,:] = indices[:max_len]
+        else:
+            array[i, :len(indices)] = indices
 
-        array[i, :len(indices)] = indices
 
-
-    return array, sizes
+    return array, sizes,max_len
 
 
 def load_parameters(dirname):

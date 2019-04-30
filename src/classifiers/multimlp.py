@@ -74,7 +74,7 @@ class MultiFeedForwardClassifier(DecomposableNLIModel):
                    params['vocab_size'], params['embedding_size'],
                    project_input=params['project_input'], training=training,
                    use_intra_attention=params['use_intra'],
-                   distance_biases=params['distance_biases'],maxlen1=None,maxlen2=None)
+                   distance_biases=params['distance_biases'],maxlen1=params['maxlen1'],maxlen2=params['maxlen2'])
 
     def _get_distance_biases(self, time_steps, reuse_weights=False):
         """

@@ -107,6 +107,11 @@ class DecomposableNLIModel(object):
 
         self.kim = False
 
+        self.num_filters = 32
+        self.filter_sizes = [1,2]
+        self.charembeddim = 50
+        self.wordembeddim = 200
+        self.max_char_len = 6
 
 
         # we have to B the vocab size to allow validate_shape on the
@@ -116,10 +121,13 @@ class DecomposableNLIModel(object):
                                                          embedding_size),
                                             'embeddings')
         # sentence plaholders have shape (batch, time_steps)
-        self.sentence1 = tf.placeholder(tf.int32, (None, None), 'sentence1')
-        self.sentence2 = tf.placeholder(tf.int32, (None, None), 'sentence2')
+        self.sentence1 = tf.placeholder(tf.int32, (None, self.maxlen1), 'sentence1')
+        self.sentence2 = tf.placeholder(tf.int32, (None, self.maxlen2), 'sentence2')
         self.sentence1_size = tf.placeholder(tf.int32, [None], 'sent1_size')
         self.sentence2_size = tf.placeholder(tf.int32, [None], 'sent2_size')
+        self.sent1_charseq = tf.placeholder(tf.int32,(None,self.maxlen1,None),'sent1_char')
+        self.sent2_charseq = tf.placeholder(tf.int32,(None,self.maxlen2,None),'sent2_char')
+
         self.label = tf.placeholder(tf.int32, [None], 'label')
         self.learning_rate = tf.placeholder(tf.float32, [],
                                             name='learning_rate')
@@ -127,7 +135,6 @@ class DecomposableNLIModel(object):
         self.clip_value = tf.placeholder(tf.float32, [], 'clip_norm')
         self.dropout_keep = tf.placeholder(tf.float32, [], 'dropout')
         self.embedding_size = embedding_size
-
         # we initialize the embeddings from a placeholder to circumvent
         # tensorflow's limitation of 2 GB nodes in the graph
         self.embeddings = tf.Variable(self.embeddings_ph, trainable=False,
@@ -135,19 +142,24 @@ class DecomposableNLIModel(object):
 
         # clip the sentences to the length of the longest one in the batch
         # this saves processing time
-        clipped_sent1 = clip_sentence(self.sentence1, self.sentence1_size)
-        clipped_sent2 = clip_sentence(self.sentence2, self.sentence2_size)
+        #clipped_sent1 = clip_sentence(self.sentence1, self.sentence1_size)
+        #clipped_sent2 = clip_sentence(self.sentence2, self.sentence2_size)
 
         # 同理在 sent1 sent2 中切片，这里根据 sentence size 切片
 
 
-        embedded1 = tf.nn.embedding_lookup(self.embeddings, clipped_sent1)
-        embedded2 = tf.nn.embedding_lookup(self.embeddings, clipped_sent2)
+        embedded1 = tf.nn.embedding_lookup(self.embeddings,self.sentence1)
+        embedded2 = tf.nn.embedding_lookup(self.embeddings, self.sentence2)
+        embedded1_char = tf.nn.embedding_lookup(self.embeddings,self.sent1_charseq)
+        embedded2_char = tf.nn.embedding_lookup(self.embeddings,self.sent2_charseq)
         repr1 = self._transformation_input(embedded1)
         repr2 = self._transformation_input(embedded2, True)
-
+        repr1_charcnn = self.charcnn(embedded1_char)
+        repr2_charcnn = self.charcnn(embedded2_char,name="conv2")
         # the architecture has 3 main steps: soft align, compare and aggregate
         # alpha and beta have shape (batch, time_steps, embeddings)
+        repr1 = tf.concat([repr1,repr1_charcnn],axis=-1)
+        repr2 = tf.concat([repr2,repr2_charcnn],axis=-1)
         self.alpha, self.beta = self.attend(repr1, repr2)
         # KIM C
         self.v1 = self.compare(repr1, self.beta, self.sentence1_size,None,None)
@@ -258,6 +270,37 @@ class DecomposableNLIModel(object):
                                   tf.stack([-1, time_steps, self.num_units]))
         return projected_3d
 
+    def charcnn(self, embedding_input,reuse_weights = False,name = "convolutions"):
+            sent_len = int(embedding_input.shape[1])
+            embedding_input = tf.reshape(embedding_input,[-1,self.max_char_len,self.wordembeddim]) 
+            embedding_input = tf.expand_dims(embedding_input,-1)
+            with tf.variable_scope(name, reuse=reuse_weights) as scope:
+                pooled_outputs = self._build_conv_maxpool(embedding_input,name=name)
+                num_total_filters = self.num_filters * len(self.filter_sizes)
+                concat_pooled = tf.concat(pooled_outputs, 3)
+                flat_pooled = tf.reshape(concat_pooled, [-1, num_total_filters])
+                h_dropout = tf.layers.dropout(flat_pooled, 1-self.dropout_keep)
+                h_dropout = tf.layers.dense(h_dropout,units=self.charembeddim,activation=tf.nn.relu)
+            h_dropout = tf.reshape(h_dropout,[-1,sent_len,self.charembeddim])
+            return h_dropout
+    def _build_conv_maxpool(self, embedding_input,reuse_weights=False,name= "convolutions"):
+        pooled_outputs = []
+        for filter_size in self.filter_sizes:
+            with tf.variable_scope(name + "-conv-maxpool-%d-filter" % (filter_size),reuse=reuse_weights):
+                conv = tf.layers.conv2d(
+                        embedding_input,
+                        self.num_filters,
+                        (filter_size, embedding_input.shape[2]),
+                        activation=tf.nn.relu)
+
+                pool = tf.layers.max_pooling2d(
+                        conv,
+                        (embedding_input.shape[1] - filter_size + 1, 1),
+                        (1, 1))
+
+                pooled_outputs.append(pool)
+        return pooled_outputs
+
     def _transformation_compare(self, sentence, num_units, length,
                                 reuse_weights=False):
         raise NotImplementedError()
@@ -351,8 +394,8 @@ class DecomposableNLIModel(object):
         """
         with tf.variable_scope('inter-attention') as self.attend_scope:
             # this is F in the paper
-            num_units = self.representation_size
-
+            # hwwang 
+            num_units = self.representation_size + self.charembeddim
             # repr1 has shape (batch, time_steps, num_units)
             # repr2 has shape (batch, num_units, time_steps)
             # attend projection
@@ -473,7 +516,11 @@ class DecomposableNLIModel(object):
         """
         return cls(params['num_units'], params['num_classes'],
                    params['vocab_size'], params['embedding_size'],
-                   project_input=params['project_input'], training=training,kim=True)
+                   project_input=params['project_input'], 
+                   training=training,
+                   kim=True,
+                   maxlen1=params['maxlen1'],
+                   maxlen2=params['maxlen2'])
 
 
     @classmethod
@@ -513,7 +560,9 @@ class DecomposableNLIModel(object):
                 'num_classes': self.num_classes,
                 'vocab_size': vocab_size,
                 'embedding_size': self.embedding_size,
-                'project_input': self.project_input}
+                'project_input': self.project_input,
+               'maxlen1':self.maxlen1,
+               'maxlen2':self.maxlen2}
 
         return data
 
@@ -542,7 +591,8 @@ class DecomposableNLIModel(object):
 
         return feature
 
-    def _create_batch_feed(self, batch_data, learning_rate, dropout_keep,
+    def _create_batch_feed(self, batch_data, learning_rate,
+                             dropout_keep,
                            l2, clip_value):
         """
         Create a feed dictionary to be given to the tensorflow session.
@@ -559,6 +609,8 @@ class DecomposableNLIModel(object):
                  self.dropout_keep: dropout_keep,
                  self.l2_constant: l2,
                  self.clip_value: clip_value,
+                 self.sent1_charseq:batch_data.sent1_charseq,
+                 self.sent2_charseq:batch_data.sent2_charseq
                  }
         return feeds
 

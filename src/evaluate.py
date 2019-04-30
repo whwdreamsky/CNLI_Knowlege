@@ -9,6 +9,7 @@ import numpy as np
 import utils
 import ioutils
 import os
+from sklearn.metrics import classification_report
 
 """
 Evaluate the performance of an NLI model on a dataset
@@ -39,18 +40,18 @@ if __name__ == '__main__':
     # root_base = "/home/hwwang/workplace/project/DAM/"
     #data_base = "/home/oliver/Documents/workplace/project/data/breaknli/"
     #data_base1 = "/home/oliver/Documents/workplace/project/data/snli/snli/"
-    data_base = "/home/oliver/Documents/workplace/project/data/cnli_back/"
+    data_base = "/home/oliver/Documents/workplace/project/data/cnli_back/blunlp/"
     root_base = "/home/oliver/Documents/workplace/project/DAM/"
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--model', help='Directory with saved model',default=root_base+'/model_weights/cnli_mlp_basic/')
+    parser.add_argument('--model', help='Directory with saved model',default=root_base+'/model_weights/cnli_mlp_charcnn/')
     parser.add_argument('--dataset',
                         help='JSONL or TSV file with data to evaluate on',default=data_base+'cnli_dev_seg_ltp.txt')
     parser.add_argument('--dataset_lemma',
                         help='JSONL or TSV file with data to evaluate on', default=data_base + 'cnli_dev_seg_ltp.txt')
-    parser.add_argument('--embeddings', help='Numpy embeddings file',default=data_base+'cnli.npy')
+    parser.add_argument('--embeddings', help='Numpy embeddings file',default=data_base+'/char_embed/cnli_tencent.npy')
 
     parser.add_argument('--vocabulary',
-                        help='Text file with embeddings vocabulary',default=data_base+'worddict.txt')
+                        help='Text file with embeddings vocabulary',default=data_base+'/char_embed/worddict.txt')
     parser.add_argument('-v',
                         help='Verbose', action='store_true', dest='verbose')
     parser.add_argument('-e',
@@ -74,18 +75,23 @@ if __name__ == '__main__':
                                                     args.vocabulary,
                                                     generate=False,
                                                     load_extra_from=None,
-                                                    normalize=True  )
+                                                    normalize=False)
 
     model.initialize_embeddings(sess, embeddings)
     label_dict = ioutils.load_label_dict(args.model)
 
     pairs,wordpairs = ioutils.read_corpus(args.dataset, True,
                                 params['language'])
-    dataset = utils.create_dataset(pairs,wordpairs,word_dict, label_dict)
+    dataset,_,_ = utils.create_dataset(
+                                pairs,wordpairs,
+                                word_dict,
+                                label_dict,
+                                max_len1=model.maxlen1,
+                                max_len2=model.maxlen2)
 
     print("Test Dataset Size :%d" ,dataset.num_items)
     loss, acc, answers,logits = model.evaluate(sess, dataset, True,batch_size=64)
-    print(answers)
+    #print(answers)
     print(np.array(logits).shape)
     label_dict_inverse = {}
     for key,value in label_dict.items():
@@ -104,6 +110,10 @@ if __name__ == '__main__':
     #    print(item)
     print('Loss: %f' % loss)
     print('Accuracy: %f' % acc)
+    target_names = []
+    for i in range(len(label_dict_inverse)):
+        target_names.append(label_dict_inverse[i])
+    print(classification_report(dataset.labels,answers,target_names=target_names))
 
     if args.errors:
         print_errors(pairs, answers, label_dict)

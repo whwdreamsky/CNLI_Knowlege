@@ -25,9 +25,10 @@ if __name__ == '__main__':
 
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     os.environ["CUDA_VISIBLE_DEVICES"] = ""
-    data_base = "/home/oliver/Documents/workplace/project/data/cnli_back/blunlp/"
-    data_base1 = "/home/oliver/Documents/workplace/project/data/cnli_back/"
-
+    data_base = \
+        "/home/oliver/Documents/workplace/project/data/cnli_back/blunlp/"
+    data_base1 = \
+        "/home/oliver/Documents/workplace/project/data/cnli_back/blunlp/char_embed/"
     #data_base = "/home/hwwang/workplace/deeplearning/textentailment/data/kim_wordnet_data/"
     # /home/hwwang/workplace/deeplearning/textentailment/data/snli  
     # train_s1_s2_label.txt
@@ -37,17 +38,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--embeddings',
                         help='Text or numpy file with word embeddings',
-                        default=data_base + 'cnli_tencent.npy')
-    parser.add_argument('--train', help='JSONL or TSV file with training corpus',default=data_base+'cnli_train_seg_ltp.txt')#cnli_train_seg_ltp.txt train_s1_s2_label.txt')#'train_lemma_wordpairs.txt')#'cnli_train_beta1_seg.txt')
+                        default=data_base1 + 'cnli_tencent.npy')
+    parser.add_argument('--train', help='JSONL or TSV file with training corpus',default=data_base+'cnli_train_seg_ltp.txt')#cnli_train_seg_ltp.txt')#cnli_train_seg_ltp.txt train_s1_s2_label.txt')#'train_lemma_wordpairs.txt')#'cnli_train_beta1_seg.txt')
     parser.add_argument('--validation',
                         help='JSONL or TSV file with validation corpus',default=data_base+'cnli_dev_seg_ltp.txt')#dev_s1_s2_label.txt')
     parser.add_argument('--test',
                         help='JSONL or TSV file with validation corpus',default=data_base+'cnli_dev_seg_ltp.txt')#dev_s1_s2_label.txt')
-    parser.add_argument('--save', help='Directory to save the model files',default=root_base+"/model_weights/cnli_mlp/")
+    parser.add_argument('--save', help='Directory to save the model files',default=root_base+"/model_weights/cnli_tmp/")
     parser.add_argument('--model', help='Type of architecture',
                         choices=['lstm', 'mlp'],default='mlp')
     parser.add_argument('--vocab', help='Vocabulary file (only needed if numpy'
-                                        'embedding file is given)',default=data_base+'worddict.txt')#new_vocab.txt')
+                                        'embedding file is given)',default=data_base1+'worddict.txt')#new_vocab.txt')
     parser.add_argument('-e', dest='num_epochs', default=30, type=int,
                         help='Number of epochs')
     parser.add_argument('-b', dest='batch_size', default=64, help='Batch size',
@@ -70,7 +71,8 @@ if __name__ == '__main__':
     parser.add_argument('--lang', choices=['en', 'pt'], default='en',
                         help='Language (default en; only affects tokenizer)')
     parser.add_argument('--lower', help='Lowercase the corpus (use it if the '
-                                        'embe dding model is lowercased)',default=True,
+                                        'embe dding model is lowercased)',
+                                        default=True,
                         action='store_false')
     parser.add_argument('--use-intra', help='Use intra-sentence attention',
                         action='store_true', dest='use_intra')
@@ -102,24 +104,6 @@ if __name__ == '__main__':
     #wordweightdict = ioutils.load_wordnetweight(args.wordnetweight)
     #wordweightdict = {}
 
-    if args.model == 'mlp':
-        model = MultiFeedForwardClassifier(args.num_units, 3, vocab_size,
-                                           embedding_size,maxlen1=None,maxlen2=None,
-                                           use_intra_attention=args.use_intra,
-                                           training=True,
-                                           project_input=args.no_project,
-                                           optimizer=args.optim)
-    else:
-        model = LSTMClassifier(args.num_units, 3, vocab_size,
-                                           embedding_size,maxlen1=None,maxlen2=None,
-                                           training=True,
-                                           project_input=args.no_project,
-                                            optimizer=args.optim)
-
-    model.initialize(sess, embeddings)
-
-    #this assertion is just for type hinting for the IDE
-    assert isinstance(model, DecomposableNLIModel)
 
 
 
@@ -148,9 +132,45 @@ if __name__ == '__main__':
 
 
 
-    train_data = utils.create_dataset(train_pairs,train_wordpairs, word_dict, label_dict,max_len1=None,max_len2=None)
-    valid_data = utils.create_dataset(valid_pairs,valid_wordpairs, word_dict, label_dict,max_len1=None,max_len2=None)
-    test_data = utils.create_dataset(test_pairs,valid_wordpairs, word_dict, label_dict,max_len1=None,max_len2=None)
+    train_data,maxlen1,maxlen2 = \
+        utils.create_dataset(train_pairs,train_wordpairs, 
+                                word_dict, label_dict,\
+                                 max_len1=None,max_len2=None)
+    print(maxlen1,maxlen2)
+    valid_data,_,_ = utils.create_dataset(
+                                         valid_pairs,valid_wordpairs,
+                                         word_dict, label_dict,
+                                         max_len1=maxlen1,max_len2=maxlen2)
+    test_data,_,_ = utils.create_dataset(
+                                        test_pairs,valid_wordpairs,
+                                        word_dict, label_dict,
+                                        max_len1=maxlen1,max_len2=maxlen2)
+    if args.model == 'mlp':
+        model = MultiFeedForwardClassifier(args.num_units, 
+                                           3, 
+                                           vocab_size,
+                                           embedding_size,
+                                           maxlen1=maxlen1,
+                                           maxlen2=maxlen2,
+                                           use_intra_attention=args.use_intra,
+                                           training=True,
+                                           project_input=args.no_project,
+                                           optimizer=args.optim)
+    else:
+        model = LSTMClassifier(args.num_units, 
+                                            3, 
+                                            vocab_size,
+                                           embedding_size,
+                                           maxlen1=maxlen1,
+                                           maxlen2=maxlen2,
+                                           training=True,
+                                           project_input=args.no_project,
+                                           optimizer=args.optim)
+
+    model.initialize(sess, embeddings)
+
+    #this assertion is just for type hinting for the IDE
+    assert isinstance(model, DecomposableNLIModel)
 
     if not os.path.exists(args.save):
         os.makedirs(args.save)
