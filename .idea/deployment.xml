@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="116" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="116">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master/resource" />
+            <excludedPath path="/home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master/data" />
+            <excludedPath path="/home/hwwang/workplace/deeplearning/textentailment/multiffn-nli-master/model_weights" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
